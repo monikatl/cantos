@@ -1,13 +1,17 @@
 package com.example.singandsongs.ui.notifications
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.singandsongs.databinding.FragmentNotificationsBinding
+import com.example.singandsongs.ui.home.CantoAdapter
 
 class NotificationsFragment : Fragment() {
 
@@ -17,22 +21,25 @@ class NotificationsFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private val viewModel: NotificationsViewModel by viewModels()
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val notificationsViewModel =
-            ViewModelProvider(this).get(NotificationsViewModel::class.java)
 
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
-        notificationsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        val adapter = PlayListAdapter()
+        binding.allPlayLists.adapter = adapter
+
+        viewModel.playLists.observe(viewLifecycleOwner) {
+            adapter.setList(viewModel.playLists.value ?: emptyList())
         }
-        return root
+
+        return binding.root
     }
 
     override fun onDestroyView() {

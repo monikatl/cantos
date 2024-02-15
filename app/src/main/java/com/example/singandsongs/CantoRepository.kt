@@ -50,6 +50,4 @@ object CantoRepository {
         Canto(1194, "STAŁA MATKA BOLEŚCIWA", THE_GREAT_FAST),
         Canto(1195, "ZAWITAJ UKRZYŻOWANY", THE_GREAT_FAST),
     )
-
-    val playLists: List<PlayList> = emptyList()
 }
