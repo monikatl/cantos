@@ -1,15 +1,18 @@
 package com.example.singandsongs.ui.home
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.singandsongs.CantoRepository
+import androidx.lifecycle.asLiveData
+import com.example.singandsongs.data.CantoRepository
 import com.example.singandsongs.model.Canto
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class HomeViewModel : ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val cantoRepository: CantoRepository
+) : ViewModel() {
 
-    private val _cantos = MutableLiveData<List<Canto>>().apply {
-        value = CantoRepository.list
-    }
-    val cantos: LiveData<List<Canto>> = _cantos
+    val cantos: LiveData<List<Canto>> = cantoRepository.getAllCantos.asLiveData()
+
 }

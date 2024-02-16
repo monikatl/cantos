@@ -31,7 +31,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@{String.valueOf(playList.id)}"
+                android:text="@{String.valueOf(playList.playListId)}"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:textAlignment="center"

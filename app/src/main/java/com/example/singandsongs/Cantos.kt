@@ -2,9 +2,8 @@ package com.example.singandsongs
 
 import com.example.singandsongs.model.Canto
 import com.example.singandsongs.model.Kind.*
-import com.example.singandsongs.model.PlayList
 
-object CantoRepository {
+object Cantos {
     val list: List<Canto> = listOf(
         Canto(181, "ACH MÓJ JEZU", THE_GREAT_FAST),
         Canto(182, "DOBRANOC GŁOWO ŚWIĘTA", THE_GREAT_FAST),

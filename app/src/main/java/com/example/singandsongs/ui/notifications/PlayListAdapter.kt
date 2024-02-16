@@ -3,14 +3,13 @@ package com.example.singandsongs.ui.notifications
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.singandsongs.databinding.CantoListItemBinding
 import com.example.singandsongs.databinding.PlayListItemBinding
 import com.example.singandsongs.model.PlayList
 
 
 class PlayListAdapter():RecyclerView.Adapter<PlayListAdapter.IntentHolder>() {
 
-    lateinit var datalist:List<PlayList>
+    private var datalist:List<PlayList> = emptyList()
 
     fun setList(datalist:List<PlayList>) {
         this.datalist = datalist

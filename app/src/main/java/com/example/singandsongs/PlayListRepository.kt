@@ -9,11 +9,10 @@ object PlayListRepository {
     @RequiresApi(Build.VERSION_CODES.O)
     val playLists: MutableList<PlayList> = mutableListOf(
         PlayList(
-            1,
             LocalDate.now(),
             "Testowa",
-            true,
-            listOf(CantoRepository.list[0], CantoRepository.list[1], CantoRepository.list[2]))
+            true
+        )
     )
 
     @RequiresApi(Build.VERSION_CODES.O)

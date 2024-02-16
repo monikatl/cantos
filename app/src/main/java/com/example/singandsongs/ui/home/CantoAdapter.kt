@@ -9,10 +9,11 @@ import com.example.singandsongs.model.Canto
 
 class CantoAdapter():RecyclerView.Adapter<CantoAdapter.IntentHolder>() {
 
-    lateinit var datalist:List<Canto>
+    var datalist:List<Canto> = emptyList()
 
     fun setList(datalist:List<Canto>) {
         this.datalist = datalist
+        notifyDataSetChanged()
     }
 
     fun filterList(filterList: List<Canto>) {
