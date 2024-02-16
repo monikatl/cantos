@@ -3,4 +3,6 @@
     <string name="title_home">Wszystkie</string>
     <string name="title_dashboard">Kategorie</string>
     <string name="title_notifications">Zbiory</string>
+    <string name="extended_fab_content_desc">dodaj zbiór</string>
+    <string name="add_list_fab">dodaj listę</string>
 </resources>

@@ -5,13 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.example.singandsongs.databinding.FragmentNotificationsBinding
-import com.example.singandsongs.ui.home.CantoAdapter
 
 class NotificationsFragment : Fragment() {
 
@@ -35,11 +32,16 @@ class NotificationsFragment : Fragment() {
         val adapter = PlayListAdapter()
         binding.allPlayLists.adapter = adapter
 
-        viewModel.playLists.observe(viewLifecycleOwner) {
-            adapter.setList(viewModel.playLists.value ?: emptyList())
-        }
+        viewModel.playLists.observe(viewLifecycleOwner) { adapter.setList(viewModel.playLists.value ?: emptyList()) }
+        binding.addPlayListButton.setOnClickListener { showAddPlayListDialog() }
 
         return binding.root
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun showAddPlayListDialog() {
+        val newFragment = AddPlayListDialogFragment(viewModel.addNewPlayList)
+        newFragment.show(activity?.supportFragmentManager!!, "add_playlist")
     }
 
     override fun onDestroyView() {
