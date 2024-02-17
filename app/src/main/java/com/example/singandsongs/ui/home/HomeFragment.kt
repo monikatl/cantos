@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.singandsongs.data.DatabaseInit
 import com.example.singandsongs.databinding.FragmentHomeBinding
 import com.example.singandsongs.model.Canto
+import com.example.singandsongs.ui.notifications.AddPlayListDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -56,6 +57,8 @@ class HomeFragment : Fragment() {
             }
         })
 
+        binding.addCantoButton.setOnClickListener { showAddCantoDialog() }
+
         return binding.root
     }
 
@@ -71,6 +74,11 @@ class HomeFragment : Fragment() {
             Toast.makeText(requireContext(), "Nie znaleziono pieśni!", Toast.LENGTH_SHORT).show()
         else
             adapter.filterList(filteredList)
+    }
+
+    private fun showAddCantoDialog() {
+        val newFragment = AddCantoDialogFragment(homeViewModel.addCanto)
+        newFragment.show(activity?.supportFragmentManager!!, "add_canto")
     }
 
     override fun onDestroyView() {

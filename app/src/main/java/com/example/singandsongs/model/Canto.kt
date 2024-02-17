@@ -5,7 +5,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "canto_table")
 data class Canto(
-    @PrimaryKey(autoGenerate = true)
-    val cantoId: Long,
+    val number: Int,
     val name: String,
-    val kind: Kind)
+    val kind: Kind,
+    @PrimaryKey(autoGenerate = true)
+    val cantoId: Long = 0
+    )

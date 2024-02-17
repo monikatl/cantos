@@ -5,4 +5,5 @@
     <string name="title_notifications">Zbiory</string>
     <string name="extended_fab_content_desc">dodaj zbiór</string>
     <string name="add_list_fab">dodaj listę</string>
+    <string name="add_canto_fab">dodaj pieśń</string>
 </resources>
