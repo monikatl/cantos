@@ -30,4 +30,17 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun editCanto(position: Int) {
+
+
+    }
+
+    fun deleteCanto(position: Int) {
+        cantos.value?.get(position)?.let {
+            viewModelScope.launch(Dispatchers.IO) {
+                cantoRepository.deleteCanto(it)
+            }
+        }
+    }
+
 }

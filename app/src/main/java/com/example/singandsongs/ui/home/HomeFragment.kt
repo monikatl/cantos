@@ -1,5 +1,6 @@
 package com.example.singandsongs.ui.home
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.FieldPosition
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -38,7 +40,7 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        val adapter = CantoAdapter()
+        val adapter = CantoAdapter(requireContext(), deleteCanto, editCanto)
         binding.allCantos.adapter = adapter
 
         homeViewModel.cantos.observe(viewLifecycleOwner) {
@@ -62,6 +64,18 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    private val deleteCanto: (Int) -> Unit = { showDeleteCantoConfirmationDialog(it) }
+    private fun showDeleteCantoConfirmationDialog(position: Int) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Czy chcesz usunąć pozycję?")
+            .setPositiveButton("OK") { dialog, _ -> homeViewModel.deleteCanto(position)}
+            .setNegativeButton("Przejdź do zbioru") {dialog, _ -> dialog.dismiss() }
+            .create()
+            .show()
+    }
+
+    private val editCanto: (Canto) -> Unit = { showAddCantoDialog(it) }
+
     private fun filter(text: String, adapter: CantoAdapter) {
         val filteredList: MutableList<Canto> = mutableListOf()
 
@@ -76,8 +90,8 @@ class HomeFragment : Fragment() {
             adapter.filterList(filteredList)
     }
 
-    private fun showAddCantoDialog() {
-        val newFragment = AddCantoDialogFragment(homeViewModel.addCanto)
+    private fun showAddCantoDialog(canto: Canto? = null) {
+        val newFragment = AddCantoDialogFragment(homeViewModel.addCanto, canto)
         newFragment.show(activity?.supportFragmentManager!!, "add_canto")
     }
 
