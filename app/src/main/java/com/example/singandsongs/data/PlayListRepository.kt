@@ -2,7 +2,6 @@ package com.example.singandsongs.data
 
 import androidx.annotation.WorkerThread
 import com.example.singandsongs.model.CantoPlayListCrossRef
-import com.example.singandsongs.model.PlayListsWithCantos
 import com.example.singandsongs.model.PlayList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -15,9 +14,16 @@ class PlayListRepository@Inject constructor(
 
     val getAllPlayLists: Flow<List<PlayList>> = playListDao.getPlayList()
 
+    val getCurrentPlayList: Flow<PlayList> = playListDao.getCurrentPlayList()
+
     @WorkerThread
     suspend fun insertPlayList(playList: PlayList) = withContext(Dispatchers.IO) {
         playListDao.insertPlayList(playList)
+    }
+
+    @WorkerThread
+    suspend fun editPlayList(playList: PlayList) = withContext(Dispatchers.IO) {
+        playListDao.updatePlayList(playList)
     }
 
     @WorkerThread

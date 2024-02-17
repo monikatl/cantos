@@ -1,5 +1,6 @@
 package com.example.singandsongs.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.time.LocalDate
@@ -8,8 +9,19 @@ import java.time.LocalDate
 data class PlayList(
     val data: LocalDate,
     val name: String,
-    var isDefault: Boolean = true,
+
+    @ColumnInfo(name = "is_current")
+    var isCurrent: Boolean = true,
     @PrimaryKey(autoGenerate = true)
     val playListId: Long = 0
 ) {
+
+    fun setCurrent() {
+        isCurrent = true
+    }
+
+    fun disconnectPlayList(): PlayList{
+        isCurrent = false
+        return this
+    }
 }

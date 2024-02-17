@@ -5,7 +5,7 @@ import androidx.room.Junction
 import androidx.room.Relation
 
 
-data class PlayListsWithCantos (
+data class PlayListWithCantos (
     @Embedded val playList: PlayList,
     @Relation(
         parentColumn = "playListId",

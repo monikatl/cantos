@@ -2,8 +2,8 @@
     <string name="app_name">SingAndSongs</string>
     <string name="title_home">Wszystkie</string>
     <string name="title_dashboard">Kategorie</string>
-    <string name="title_notifications">Zbiory</string>
-    <string name="extended_fab_content_desc">dodaj zbiór</string>
-    <string name="add_list_fab">dodaj listę</string>
+    <string name="title_notifications">Zestawy</string>
+    <string name="extended_fab_content_desc">dodaj zestaw</string>
+    <string name="add_list_fab">dodaj zestaw</string>
     <string name="add_canto_fab">dodaj pieśń</string>
 </resources>
