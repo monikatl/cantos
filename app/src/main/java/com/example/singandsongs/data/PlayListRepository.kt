@@ -16,6 +16,8 @@ class PlayListRepository@Inject constructor(
 
     val getCurrentPlayList: Flow<PlayList> = playListDao.getCurrentPlayList()
 
+    val isAttached: Flow<Boolean> = playListDao.isAttached()
+
     @WorkerThread
     suspend fun insertPlayList(playList: PlayList) = withContext(Dispatchers.IO) {
         playListDao.insertPlayList(playList)

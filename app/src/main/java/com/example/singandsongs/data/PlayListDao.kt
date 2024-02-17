@@ -15,6 +15,10 @@ interface PlayListDao {
     @Query("SELECT * FROM play_list_table WHERE is_current = true LIMIT 1")
     fun getCurrentPlayList(): Flow<PlayList>
 
+    @Query("SELECT EXISTS(SELECT 1 FROM play_list_table WHERE is_current = true LIMIT 1)")
+    fun isAttached(): Flow<Boolean>
+
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPlayList(playList: PlayList)
 
