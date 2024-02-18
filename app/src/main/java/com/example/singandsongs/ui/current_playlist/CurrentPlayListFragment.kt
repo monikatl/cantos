@@ -1,6 +1,8 @@
 package com.example.singandsongs.ui.current_playlist
 
 import android.app.AlertDialog
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -61,9 +63,25 @@ class CurrentPlayListFragment : Fragment() {
         touchHelper.attachToRecyclerView(binding.cantosRecyclerView)
 
         binding.deletePlayList.setOnClickListener { showDeleteConfirmDialog() }
+        binding.sharePlayList.setOnClickListener { sharePlayList() }
+
         binding.attachPlayList.setOnClickListener { showPlayListsDialog() }
 
         return binding.root
+    }
+
+    private fun sharePlayList() {
+        val textList = viewModel.playListWithCantos.value?.convertToSend()
+        val sendIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, textList)
+            type = "text/plain"
+        }
+        try {
+            startActivity(sendIntent)
+        } catch (e: ActivityNotFoundException) {
+            // Define what your app should do if no activity can handle the intent.
+        }
     }
 
     private fun showDeleteConfirmDialog() {

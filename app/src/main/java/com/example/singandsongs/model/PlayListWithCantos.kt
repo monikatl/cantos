@@ -13,4 +13,11 @@ data class PlayListWithCantos (
         associateBy = Junction(CantoPlayListCrossRef::class)
     )
     val cantos: List<Canto>
-)
+){
+    fun convertToSend(): String {
+        val listToSend = StringBuilder()
+        listToSend.append(playList.name, "\n")
+        cantos.forEach { listToSend.append(it.number, " ", it.name, "\n") }
+        return listToSend.toString()
+    }
+}
