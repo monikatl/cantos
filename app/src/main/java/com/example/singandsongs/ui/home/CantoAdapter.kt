@@ -1,15 +1,19 @@
 package com.example.singandsongs.ui.home
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singandsongs.R
 import com.example.singandsongs.databinding.CantoListItemBinding
 import com.example.singandsongs.model.Canto
 import com.example.singandsongs.model.CantoPlayListCrossRef
+import java.net.URLEncoder
 import java.util.*
 
 
@@ -75,8 +79,12 @@ class CantoAdapter(private val context: Context,
                 popupMenu.menuInflater.inflate(R.menu.popup_menu, popupMenu.menu)
                 popupMenu.setOnMenuItemClickListener { menuItem ->
                     when (menuItem.itemId) {
+                        R.id.action_search -> {
+                            searchOnGoogle(canto.name)
+                            true
+                        }
                         R.id.action_edit -> {
-                            editAction?.invoke(datalist[position])
+                            editAction?.invoke(canto)
                             true
                         }
                         R.id.action_delete -> {
@@ -89,6 +97,17 @@ class CantoAdapter(private val context: Context,
                 popupMenu.show()
                 true
             }
+        }
+    }
+
+    private fun searchOnGoogle(query: String) {
+        val searchUri = Uri.parse("https://www.google.com/search?q=${URLEncoder.encode(query, "UTF-8")}")
+        val searchIntent = Intent(Intent.ACTION_VIEW, searchUri)
+        searchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        try {
+            context.startActivity(searchIntent)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
