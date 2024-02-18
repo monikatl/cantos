@@ -2,6 +2,7 @@ package com.example.singandsongs.data
 
 import androidx.annotation.WorkerThread
 import com.example.singandsongs.model.Canto
+import com.example.singandsongs.model.Kind
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -12,6 +13,8 @@ class CantoRepository @Inject constructor(
 ) {
 
     val getAllCantos: Flow<List<Canto>> = cantoDao.getAllCantos()
+
+    fun getCantosByCategory(category: Kind) = cantoDao.getAllCantosByKind(category)
 
     @WorkerThread
     suspend fun insertCanto(canto: Canto) = withContext(Dispatchers.IO) {

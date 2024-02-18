@@ -3,9 +3,16 @@
 <layout>
 
     <data>
+        <import type="android.view.View" />
+
         <variable
             name="canto"
             type="com.example.singandsongs.model.Canto" />
+
+        <variable
+            name="color"
+            type="Integer" />
+
     </data>
 
     <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -19,15 +26,16 @@
         android:checkable="true"
         android:layout_marginVertical="2dp"
         android:layout_marginBottom="4dp"
-        android:backgroundTint="@color/teal_200"
+        app:strokeColor="@color/teal_700"
+        app:strokeWidth="2dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="0dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
             android:paddingHorizontal="4dp"
             android:orientation="horizontal">
 
@@ -47,6 +55,14 @@
                 android:text="@{canto.name}"
                 android:textSize="21sp"
                 android:layout_weight="5"/>
+
+            <ImageButton
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginRight="8dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/circle_background"
+                android:backgroundTint="@{color}" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

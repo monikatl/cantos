@@ -1,6 +1,7 @@
 package com.example.singandsongs.ui.home
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
@@ -52,6 +53,7 @@ class CantoAdapter(private val context: Context,
     class IntentHolder(val binding: CantoListItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(canto: Canto) {
             binding.canto = canto
+            binding.color = Color.parseColor(canto.kind.color)
         }
     }
 
@@ -89,8 +91,6 @@ class CantoAdapter(private val context: Context,
             }
         }
     }
-
-
 
     override fun getItemCount(): Int {
         return datalist.size

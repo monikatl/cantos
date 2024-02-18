@@ -3,11 +3,23 @@ package com.example.singandsongs.ui.dashboard
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
+import com.example.singandsongs.data.CantoRepository
+import com.example.singandsongs.model.Kind
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class DashboardViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
+@HiltViewModel
+class DashboardViewModel  @Inject constructor(
+    private val cantoRepository: CantoRepository
+) : ViewModel() {
+
+    private val _categories = MutableLiveData<List<Kind>>().apply {
+        value = Kind.values().asList()
     }
-    val text: LiveData<String> = _text
+
+    val categories: LiveData<List<Kind>> = _categories
 }
+
+
