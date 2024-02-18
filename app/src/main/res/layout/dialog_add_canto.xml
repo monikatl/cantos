@@ -7,9 +7,9 @@
     android:padding="8dp">
 
     <ImageView
-        android:src="@drawable/baseline_post_add_24"
+        android:src="@drawable/audio_melody_music_35_svgrepo_com"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="80dp"
         android:scaleType="center"
         android:contentDescription="@string/app_name" />
 

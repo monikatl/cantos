@@ -7,6 +7,7 @@ import android.widget.CheckBox
 import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import com.example.singandsongs.R
+import com.google.android.material.textfield.TextInputLayout
 
 
 class AddPlayListDialogFragment(private val action: (String, Boolean) -> Unit)  : DialogFragment() {
@@ -27,9 +28,9 @@ class AddPlayListDialogFragment(private val action: (String, Boolean) -> Unit)  
 
     private fun clickPositiveButton() {
         dialog?.let{
-            val nameText: EditText = it.findViewById(R.id.name)
+            val nameText: TextInputLayout = it.findViewById(R.id.name)
             val isDefaultCheck: CheckBox = it.findViewById(R.id.isDefault)
-            name = nameText.text.toString()
+            name = nameText.editText?.text.toString()
             isDefault = isDefaultCheck.isChecked
             action.invoke(name, isDefault)
         }
