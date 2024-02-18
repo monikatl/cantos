@@ -27,8 +27,8 @@ class NotificationsViewModel @Inject constructor(
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    val addNewPlayList: (String, Boolean) -> Unit = { name, isDefault ->
-        val playList = PlayList(LocalDate.now(), name, isDefault)
+    val addNewPlayList: (LocalDate, String, Boolean) -> Unit = { date, name, isDefault ->
+        val playList = PlayList(date, name, isDefault)
         playLists.value?.let {
             viewModelScope.launch(Dispatchers.IO) {
                 if(isDefault)

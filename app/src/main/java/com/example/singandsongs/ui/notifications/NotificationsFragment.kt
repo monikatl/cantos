@@ -19,12 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class NotificationsFragment : Fragment() {
 
-    private var _binding: FragmentNotificationsBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
+    private lateinit var binding: FragmentNotificationsBinding
     private val viewModel: NotificationsViewModel by viewModels()
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -34,7 +29,7 @@ class NotificationsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
+        binding = FragmentNotificationsBinding.inflate(inflater, container, false)
 
         val adapter = PlayListAdapter(setCurrentPlayList)
         binding.allPlayLists.adapter = adapter
@@ -58,16 +53,14 @@ class NotificationsFragment : Fragment() {
             showInfoDialog(currentPlayList.name)
     }
 
-    private fun showInfoDialog(playListName: String) {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Zbiór: $playListName")
-            .setMessage("został ustawiony jako domyślny. \nMożesz teraz dodawać do niego pieśni.")
-            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss()}
-            .setNegativeButton("Przejdź do zbioru") {dialog, _ -> navigateToCurrentPlayListFragment(dialog) }
-            .setNeutralButton("Dodaj pieśni") {dialog, _ -> navigateToHomeFragment(dialog)}
-            .create()
-            .show()
-    }
+    private fun showInfoDialog(playListName: String) = AlertDialog.Builder(requireContext())
+        .setTitle(playListName)
+        .setMessage("zbiór został ustawiony jako domyślny. \nMożesz dodawać do niego pieśni.")
+        .setPositiveButton("OK") { dialog, _ -> dialog.dismiss()}
+        .setNegativeButton("do zbioru") { dialog, _ -> navigateToCurrentPlayListFragment(dialog) }
+        .setNeutralButton("dodaj pieśni") { dialog, _ -> navigateToHomeFragment(dialog) }
+        .create()
+        .show()
 
     private fun navigateToHomeFragment(dialog: DialogInterface) {
         findNavController().navigate(R.id.navigation_home)
@@ -77,10 +70,5 @@ class NotificationsFragment : Fragment() {
     private fun navigateToCurrentPlayListFragment(dialog: DialogInterface) {
         findNavController().navigate(R.id.currentPlayListFragment)
         dialog.dismiss()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
