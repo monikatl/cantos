@@ -27,7 +27,7 @@ class AddPlayListDialogFragment(private val action: (LocalDate, String, Boolean)
 
     @RequiresApi(Build.VERSION_CODES.O)
     var date: LocalDate = LocalDate.now()
-    var name: String = "Nowa lista"
+    var name: String = "Nowy zbiór"
     private var isDefault: Boolean = true
     private lateinit var binding: DialogAddPlaylistBinding
 
@@ -60,7 +60,8 @@ class AddPlayListDialogFragment(private val action: (LocalDate, String, Boolean)
     @RequiresApi(Build.VERSION_CODES.O)
     private fun clickPositiveButton() {
         dialog?.let{
-            name = binding.inputName.text.toString()
+            val nameText = binding.inputName.text.toString()
+            name = nameText.ifBlank { name }
             isDefault = binding.isDefault.isChecked
             action.invoke(date, name, isDefault)
         }
