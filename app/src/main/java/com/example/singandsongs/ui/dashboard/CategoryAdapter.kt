@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 
-class CategoryAdapter(val onCategoryClicked: (Int) -> Unit):RecyclerView.Adapter<CategoryAdapter.IntentHolder>() {
+class CategoryAdapter(private val onCategoryClicked: (Int) -> Unit):RecyclerView.Adapter<CategoryAdapter.IntentHolder>() {
 
     var datalist:List<Kind> = emptyList()
 

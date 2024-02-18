@@ -13,10 +13,9 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="80dp"
         android:layout_marginBottom="8dp"
-        app:strokeWidth="2dp"
-        app:strokeColor="@color/teal_700"
+        android:backgroundTint="@color/teal_200"
         app:cardCornerRadius="30dp"
         app:cardElevation="0dp">
 
@@ -25,13 +24,11 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginLeft="16dp"
-                android:background="@drawable/circle_background"
-                android:backgroundTint="@{color}"
+                android:layout_width="25dp"
+                android:layout_height="match_parent"
+                android:background="@{color}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
