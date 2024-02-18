@@ -3,6 +3,7 @@ package com.example.singandsongs.data
 import androidx.annotation.WorkerThread
 import com.example.singandsongs.model.CantoPlayListCrossRef
 import com.example.singandsongs.model.PlayList
+import com.example.singandsongs.model.PlayListWithCantos
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -17,6 +18,10 @@ class PlayListRepository@Inject constructor(
     val getCurrentPlayList: Flow<PlayList> = playListDao.getCurrentPlayList()
 
     val isAttached: Flow<Boolean> = playListDao.isAttached()
+
+    val getPlayListWithCantos: Flow<PlayListWithCantos> = playListDao.getPlayListWithCantos()
+
+    val getRefList: Flow<List<CantoPlayListCrossRef>> = playListDao.getRefList()
 
     @WorkerThread
     suspend fun insertPlayList(playList: PlayList) = withContext(Dispatchers.IO) {
@@ -42,4 +47,5 @@ class PlayListRepository@Inject constructor(
     suspend fun deleteCantoPlayListCrossRef(ref: CantoPlayListCrossRef) = withContext(Dispatchers.IO) {
         playListDao.deleteCantoPlayListCrossRef(ref)
     }
+
 }

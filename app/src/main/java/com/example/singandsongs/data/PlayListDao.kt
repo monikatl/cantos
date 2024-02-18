@@ -3,6 +3,7 @@ package com.example.singandsongs.data
 import androidx.room.*
 import com.example.singandsongs.model.CantoPlayListCrossRef
 import com.example.singandsongs.model.PlayList
+import com.example.singandsongs.model.PlayListWithCantos
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -12,12 +13,18 @@ interface PlayListDao {
     @Query("SELECT * FROM play_list_table")
     fun getPlayList(): Flow<List<PlayList>>
 
+    @Transaction
+    @Query("SELECT * FROM play_list_table WHERE is_current = true LIMIT 1")
+    fun getPlayListWithCantos(): Flow<PlayListWithCantos>
+
     @Query("SELECT * FROM play_list_table WHERE is_current = true LIMIT 1")
     fun getCurrentPlayList(): Flow<PlayList>
 
     @Query("SELECT EXISTS(SELECT 1 FROM play_list_table WHERE is_current = true LIMIT 1)")
     fun isAttached(): Flow<Boolean>
 
+    @Query("SELECT * FROM canto_with_playlist_table")
+    fun getRefList(): Flow<List<CantoPlayListCrossRef>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPlayList(playList: PlayList)
@@ -33,5 +40,6 @@ interface PlayListDao {
 
     @Delete
     fun deleteCantoPlayListCrossRef(ref: CantoPlayListCrossRef)
+
 
 }

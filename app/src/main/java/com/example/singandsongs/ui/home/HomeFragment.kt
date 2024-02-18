@@ -40,13 +40,19 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        val adapter = CantoAdapter(requireContext(), deleteCanto, editCanto)
+        binding.viewModel = homeViewModel
+        binding.lifecycleOwner = this
+
+        val adapter = CantoAdapter(requireContext(), deleteCanto, editCanto, homeViewModel.addCantoToCurrentPlayList)
         binding.allCantos.adapter = adapter
 
         homeViewModel.cantos.observe(viewLifecycleOwner) {
             adapter.setList(homeViewModel.cantos.value ?: emptyList())
         }
 
+        homeViewModel.playListWithCantos.observe(viewLifecycleOwner) {
+
+        }
 
         binding.search.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener,
            SearchView.OnQueryTextListener {
@@ -94,6 +100,7 @@ class HomeFragment : Fragment() {
         val newFragment = AddCantoDialogFragment(homeViewModel.addCanto, canto)
         newFragment.show(activity?.supportFragmentManager!!, "add_canto")
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

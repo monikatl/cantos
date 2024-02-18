@@ -8,7 +8,7 @@ import com.example.singandsongs.model.CantoPlayListCrossRef
 import com.example.singandsongs.model.PlayList
 
 
-@androidx.room.Database(entities = [Canto::class, PlayList::class, CantoPlayListCrossRef::class], version = 11, exportSchema = false)
+@androidx.room.Database(entities = [Canto::class, PlayList::class, CantoPlayListCrossRef::class], version = 12, exportSchema = false)
 @TypeConverters(DateConverters::class)
 abstract class Database : RoomDatabase() {
     abstract fun cantoDao(): CantoDao
