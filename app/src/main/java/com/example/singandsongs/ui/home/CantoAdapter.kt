@@ -20,7 +20,8 @@ import java.util.*
 class CantoAdapter(private val context: Context,
                    private val deleteAction: ((Int) -> Unit)? = null,
                    private val editAction: ((Canto) -> Unit)? = null,
-                   private val onClickItem: ((Long) -> Unit)? = null
+                   private val onClickItem: ((Long) -> Unit)? = null,
+                   private val checkFav: ((Canto) -> Unit)? = null
 ):RecyclerView.Adapter<CantoAdapter.IntentHolder>() {
 
     var datalist:List<Canto> = emptyList()
@@ -79,6 +80,10 @@ class CantoAdapter(private val context: Context,
                 popupMenu.menuInflater.inflate(R.menu.popup_menu, popupMenu.menu)
                 popupMenu.setOnMenuItemClickListener { menuItem ->
                     when (menuItem.itemId) {
+                        R.id.action_favourite -> {
+                            checkFav?.invoke(canto)
+                            true
+                        }
                         R.id.action_search -> {
                             searchOnGoogle(canto.name)
                             true
@@ -99,7 +104,6 @@ class CantoAdapter(private val context: Context,
             }
         }
     }
-
     private fun searchOnGoogle(query: String) {
         val searchUri = Uri.parse("https://www.google.com/search?q=${URLEncoder.encode(query, "UTF-8")}")
         val searchIntent = Intent(Intent.ACTION_VIEW, searchUri)

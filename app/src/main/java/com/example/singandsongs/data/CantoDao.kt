@@ -16,6 +16,9 @@ interface CantoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCanto(canto: Canto)
 
+    @Update
+    fun updateCanto(canto: Canto)
+
     @Delete
     fun deleteCanto(canto: Canto)
 }

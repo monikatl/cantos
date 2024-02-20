@@ -1,6 +1,7 @@
 package com.example.singandsongs.ui.home
 
 import android.app.AlertDialog
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +12,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
+import com.example.singandsongs.R
 import com.example.singandsongs.data.DatabaseInit
 import com.example.singandsongs.databinding.FragmentHomeBinding
 import com.example.singandsongs.model.Canto
 import com.example.singandsongs.ui.notifications.AddPlayListDialogFragment
+import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,8 +32,6 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val homeViewModel: HomeViewModel by viewModels()
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -43,16 +45,29 @@ class HomeFragment : Fragment() {
         binding.viewModel = homeViewModel
         binding.lifecycleOwner = this
 
-        val adapter = CantoAdapter(requireContext(), deleteCanto, editCanto, homeViewModel.addCantoToCurrentPlayList)
+        val adapter = CantoAdapter(requireContext(), deleteCanto, editCanto, homeViewModel.addCantoToCurrentPlayList, homeViewModel.checkFav)
         binding.allCantos.adapter = adapter
 
         homeViewModel.cantos.observe(viewLifecycleOwner) {
             adapter.setList(homeViewModel.cantos.value ?: emptyList())
         }
 
-        homeViewModel.playListWithCantos.observe(viewLifecycleOwner) {
+        binding.tabLayout.addOnTabSelectedListener (object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    tab?.let {
+                        val cantos = homeViewModel.filterCantos(it)
+                        adapter.setList(cantos ?: emptyList())
+                    }
+                }
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+                    // Handle tab reselect
+                }
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+                    // Handle tab unselect
+                }
+        })
 
-        }
+        homeViewModel.playListWithCantos.observe(viewLifecycleOwner) {}
 
         binding.search.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener,
            SearchView.OnQueryTextListener {

@@ -22,7 +22,13 @@ class CantoRepository @Inject constructor(
     }
 
     @WorkerThread
+    suspend fun updateCanto(canto: Canto) = withContext(Dispatchers.IO) {
+        cantoDao.updateCanto(canto)
+    }
+
+    @WorkerThread
     suspend fun deleteCanto(canto: Canto) = withContext(Dispatchers.IO) {
         cantoDao.deleteCanto(canto)
     }
+
 }

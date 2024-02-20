@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.singandsongs.data.CantoRepository
 import com.example.singandsongs.data.PlayListRepository
 import com.example.singandsongs.model.*
+import com.google.android.material.tabs.TabLayout.Tab
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,7 +22,7 @@ class HomeViewModel @Inject constructor(
     private val cantoRepository: CantoRepository
 ) : ViewModel() {
 
-    val cantos: LiveData<List<Canto>> = cantoRepository.getAllCantos.asLiveData()
+    var cantos: LiveData<List<Canto>> = cantoRepository.getAllCantos.asLiveData()
     val playListWithCantos: LiveData<PlayListWithCantos> = playListRepository.getPlayListWithCantos.asLiveData()
 
     val addCanto: (Int, String, Kind) -> Unit = { number, name, kind ->
@@ -39,6 +40,20 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun filterCantosList(group: String) {
+
+    }
+
+    fun filterCantos(tab: Tab): List<Canto>? {
+        return when(tab.text) {
+            "Wszystkie" -> cantos.value
+            "Ulubione" -> cantos.value?.filter { it.isFavourite }
+            "Oczekujące" -> emptyList()
+            else -> emptyList()
+        }
+    }
+
+
     val addCantoToCurrentPlayList: (Long) -> Unit = { cantoId ->
         val playListId = playListWithCantos.value?.playList?.playListId
         playListId?.let {
@@ -48,4 +63,11 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    val checkFav: (Canto) -> Unit = { canto ->
+        canto.checkAsFavourite()
+        viewModelScope.launch(Dispatchers.IO) {
+            cantoRepository.updateCanto(canto)
+        }
+
+    }
 }
