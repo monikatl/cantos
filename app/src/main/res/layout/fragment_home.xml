@@ -13,18 +13,30 @@
         android:layout_height="match_parent"
         tools:context=".ui.home.HomeFragment">
 
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/addDraftButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/rule_draft_svgrepo_com"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/search"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/search" />
+
         <SearchView
             android:id="@+id/search"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/oval"
-            android:queryBackground="@null"
             android:iconifiedByDefault="false"
             android:padding="4dp"
+            android:queryBackground="@null"
             android:queryHint="Wyszukaj"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/addDraftButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

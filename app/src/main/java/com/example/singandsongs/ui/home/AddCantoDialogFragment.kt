@@ -13,7 +13,8 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 
-class AddCantoDialogFragment(private val action: (Int, String, Kind) -> Unit, val canto: Canto? = null)  : DialogFragment() {
+class AddCantoDialogFragment(private val action: (Int, String, Kind) -> Unit,
+                             val canto: Canto? = null, val draftName: String? = null)  : DialogFragment() {
 
     var name: String = "Nowa pieśń"
     var number: Int = 315
@@ -30,6 +31,7 @@ class AddCantoDialogFragment(private val action: (Int, String, Kind) -> Unit, va
 
         } ?: throw IllegalStateException("Activity cannot be null")
         dialog.setOnShowListener {
+            if(this.tag == "add_draft") setDraftImageAndName()
             if(canto != null) bindProperties()
             setKindList()
         }
@@ -47,13 +49,26 @@ class AddCantoDialogFragment(private val action: (Int, String, Kind) -> Unit, va
         }
     }
 
+    private fun setDraftImageAndName() {
+        dialog?.let{
+            val image: ImageView = it.findViewById(R.id.dialogImage)
+            image.setImageResource(R.drawable.rule_draft_svgrepo_com)
+            val nameText: TextInputLayout = it.findViewById(R.id.name)
+            nameText.editText?.setText(draftName)
+        }
+    }
+
     private fun clickPositiveButton() {
         dialog?.let{
             val nameText: TextInputLayout = it.findViewById(R.id.name)
             val numberText: TextInputLayout = it.findViewById(R.id.number)
             name = nameText.editText?.text.toString()
-            number = numberText.editText?.text.toString().toInt()
-            action.invoke(number, name, kind)
+            number = try {
+                numberText.editText?.text.toString().toInt()
+            } catch (e: java.lang.NumberFormatException) {
+                0
+            }
+            action.invoke( number, name, kind)
         }
     }
 

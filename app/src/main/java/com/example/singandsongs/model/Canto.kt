@@ -6,11 +6,13 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "canto_table")
 data class Canto(
-    val number: Int,
+    val number: Int?,
     val name: String,
-    val kind: Kind,
+    val kind: Kind?,
     @ColumnInfo(name = "is_favourite")
     var isFavourite: Boolean = false,
+    @ColumnInfo(name = "is_draft")
+    var isDraft: Boolean = false,
     @PrimaryKey(autoGenerate = true)
     val cantoId: Long = 0
     ) {
@@ -18,7 +20,10 @@ data class Canto(
         isFavourite = !isFavourite
     }
 
-    fun uncheckAsFavourite() {
-        isFavourite = !isFavourite
+    companion object {
+        fun createDraftCanto(name: String, number: Int? = null, kind: Kind? = null): Canto {
+            return Canto(number, name, kind, isDraft = true)
+        }
+
     }
 }

@@ -13,6 +13,7 @@ class CantoRepository @Inject constructor(
 ) {
 
     val getAllCantos: Flow<List<Canto>> = cantoDao.getAllCantos()
+    val getAllDrafts: Flow<List<Canto>> = cantoDao.getAllDrafts()
 
     fun getCantosByCategory(category: Kind) = cantoDao.getAllCantosByKind(category)
 

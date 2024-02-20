@@ -23,6 +23,7 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     var cantos: LiveData<List<Canto>> = cantoRepository.getAllCantos.asLiveData()
+    var drafts: LiveData<List<Canto>> = cantoRepository.getAllDrafts.asLiveData()
     val playListWithCantos: LiveData<PlayListWithCantos> = playListRepository.getPlayListWithCantos.asLiveData()
 
     val addCanto: (Int, String, Kind) -> Unit = { number, name, kind ->
@@ -30,6 +31,17 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             cantoRepository.insertCanto(canto)
         }
+    }
+
+    val addDraft:  (Int, String, Kind) -> Unit = { number, name, kind ->
+        val canto = Canto.createDraftCanto(name,number, kind)
+        viewModelScope.launch(Dispatchers.IO) {
+            cantoRepository.insertCanto(canto)
+        }
+    }
+
+    val editCanto: (Int, String, Kind) -> Unit = { _, _, _ ->
+
     }
 
     fun deleteCanto(position: Int) {
@@ -48,7 +60,7 @@ class HomeViewModel @Inject constructor(
         return when(tab.text) {
             "Wszystkie" -> cantos.value
             "Ulubione" -> cantos.value?.filter { it.isFavourite }
-            "Oczekujące" -> emptyList()
+            "Oczekujące" -> drafts.value
             else -> emptyList()
         }
     }

@@ -52,6 +52,10 @@ class HomeFragment : Fragment() {
             adapter.setList(homeViewModel.cantos.value ?: emptyList())
         }
 
+        homeViewModel.drafts.observe(viewLifecycleOwner) {
+            adapter.setList(homeViewModel.drafts.value ?: emptyList())
+        }
+
         binding.tabLayout.addOnTabSelectedListener (object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     tab?.let {
@@ -95,7 +99,7 @@ class HomeFragment : Fragment() {
             .show()
     }
 
-    private val editCanto: (Canto) -> Unit = { showAddCantoDialog(it) }
+    private val editCanto: (Canto) -> Unit = { canto -> showEditCantoDialog(canto) }
 
     private fun filter(text: String, adapter: CantoAdapter) {
         val filteredList: MutableList<Canto> = mutableListOf()
@@ -105,15 +109,39 @@ class HomeFragment : Fragment() {
                 filteredList.add(item)
             }
         }
-        if (filteredList.isEmpty())
-            Toast.makeText(requireContext(), "Nie znaleziono pieśni!", Toast.LENGTH_SHORT).show()
-        else
+        if (filteredList.isEmpty()) {
+            enableDraftAdd(text)
+            adapter.setList(filteredList)
+        }
+        else {
             adapter.filterList(filteredList)
+            setDraftButtonVisibility(false)
+        }
+
     }
 
-    private fun showAddCantoDialog(canto: Canto? = null) {
-        val newFragment = AddCantoDialogFragment(homeViewModel.addCanto, canto)
+    private fun enableDraftAdd(text: String) {
+        setDraftButtonVisibility(true)
+        binding.addDraftButton.setOnClickListener {  showAddDraftDialog(text) }
+    }
+
+    private fun setDraftButtonVisibility(isVisible: Boolean) {
+        binding.addDraftButton.visibility = if(isVisible)  View.VISIBLE else View.GONE
+    }
+
+    private fun showAddDraftDialog(name: String) {
+        val newFragment = AddCantoDialogFragment(homeViewModel.addDraft, draftName = name)
+        newFragment.show(activity?.supportFragmentManager!!, "add_draft")
+    }
+
+    private fun showAddCantoDialog() {
+        val newFragment = AddCantoDialogFragment(homeViewModel.addCanto)
         newFragment.show(activity?.supportFragmentManager!!, "add_canto")
+    }
+
+    private fun showEditCantoDialog(canto: Canto? = null) {
+        val newFragment = AddCantoDialogFragment(homeViewModel.editCanto, canto)
+        newFragment.show(activity?.supportFragmentManager!!, "edit_canto")
     }
 
 

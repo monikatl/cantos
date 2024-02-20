@@ -58,7 +58,7 @@ class CantoAdapter(private val context: Context,
     class IntentHolder(val binding: CantoListItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(canto: Canto) {
             binding.canto = canto
-            binding.color = Color.parseColor(canto.kind.color)
+            binding.color = Color.parseColor(canto.kind?.color)
         }
     }
 
