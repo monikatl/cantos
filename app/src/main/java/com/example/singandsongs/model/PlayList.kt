@@ -12,12 +12,15 @@ data class PlayList(
 
     @ColumnInfo(name = "is_current")
     var isCurrent: Boolean = true,
+    @ColumnInfo(name = "frequency_counter")
+    var frequencyCounter: Long = 0L,
     @PrimaryKey(autoGenerate = true)
     val playListId: Long = 0
 ) {
 
     fun setCurrent() {
         isCurrent = true
+        frequencyCounter++
     }
 
     fun disconnectPlayList(): PlayList{

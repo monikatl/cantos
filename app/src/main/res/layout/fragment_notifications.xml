@@ -3,11 +3,78 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <import type="com.example.singandsongs.utils.SortCondition"/>
+        <variable
+            name="viewModel"
+            type="com.example.singandsongs.ui.notifications.NotificationsViewModel" />
+    </data>
+
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="4dp"
     tools:context=".ui.notifications.NotificationsFragment">
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/materialButtonToggleGroup"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:singleSelection="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:id="@+id/a_z"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:icon="@drawable/text_sort_ascending_svgrepo_com" />
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:id="@+id/z_a"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:icon="@drawable/text_sort_descending_svgrepo_com"/>
+
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:id="@+id/dateAsc"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:icon="@drawable/date_up_svgrepo_com" />
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:id="@+id/dateDesc"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:icon="@drawable/date_down_svgrepo_com"/>
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:id="@+id/freqAsc"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:icon="@drawable/up_left_circle_svgrepo_com"/>
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:id="@+id/freqDesc"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:icon="@drawable/down_right_circle_svgrepo_com"/>
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/allPlayLists"
@@ -18,7 +85,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialButtonToggleGroup"
         tools:listitem="@layout/play_list_item" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

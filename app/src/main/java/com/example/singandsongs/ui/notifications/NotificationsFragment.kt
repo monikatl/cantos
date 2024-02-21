@@ -1,19 +1,19 @@
 package com.example.singandsongs.ui.notifications
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.Toast
+import com.example.singandsongs.utils.SortCondition.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.singandsongs.R
 import com.example.singandsongs.databinding.FragmentNotificationsBinding
+import com.example.singandsongs.utils.SortCondition
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,9 +34,26 @@ class NotificationsFragment : Fragment() {
         val adapter = PlayListAdapter(setCurrentPlayList)
         binding.allPlayLists.adapter = adapter
 
-        viewModel.playLists.observe(viewLifecycleOwner) { adapter.setList(viewModel.playLists.value ?: emptyList()) }
+        viewModel.playLists.observe(viewLifecycleOwner) {
+            adapter.setList(viewModel.playLists.value ?: emptyList())
+        }
+
         binding.addPlayListButton.setOnClickListener { showAddPlayListDialog() }
 
+        binding.materialButtonToggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if(isChecked) {
+                val order =  when(checkedId) {
+                    R.id.a_z -> AZ
+                    R.id.z_a -> ZA
+                    R.id.freqAsc -> FREQ_ASC
+                    R.id.freqDesc -> FREQ_DESC
+                    R.id.dateAsc -> DATE_ASC
+                    R.id.dateDesc -> DATE_DESC
+                    else -> BY_ID
+                }
+                viewModel.choseSortCondition(order)
+            }
+        }
         return binding.root
     }
 

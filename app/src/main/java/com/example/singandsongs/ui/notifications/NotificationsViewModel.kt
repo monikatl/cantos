@@ -1,15 +1,12 @@
 package com.example.singandsongs.ui.notifications
 
-import android.app.AlertDialog
-import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.*
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
 import com.example.singandsongs.data.PlayListRepository
 import com.example.singandsongs.model.PlayList
+import com.example.singandsongs.utils.SortCondition
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,8 +19,16 @@ class NotificationsViewModel @Inject constructor(
 ) : ViewModel() {
 
 
+
+    private val _sortCondition = MutableLiveData<SortCondition>().apply {
+        value = SortCondition.AZ
+    }
+
+    val sortCondition: LiveData<SortCondition> = _sortCondition
+
+
     @RequiresApi(Build.VERSION_CODES.O)
-    val playLists: LiveData<List<PlayList>> = playListRepository.getAllPlayLists.asLiveData()
+    var playLists: LiveData<List<PlayList>> = sortCondition.switchMap { playListRepository.getAllPlayLists(it).asLiveData() }
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -54,5 +59,8 @@ class NotificationsViewModel @Inject constructor(
         return playList
     }
 
-
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun choseSortCondition(condition: SortCondition) {
+        _sortCondition.value = condition
+    }
 }
