@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class PlayListRepository@Inject constructor(
+class PlayListRepository @Inject constructor(
     private val playListDao: PlayListDao
 ) {
     fun getAllPlayLists(condition: SortCondition): Flow<List<PlayList>> {
@@ -33,6 +33,8 @@ class PlayListRepository@Inject constructor(
     val isAttached: Flow<Boolean> = playListDao.isAttached()
 
     val getPlayListWithCantos: Flow<PlayListWithCantos> = playListDao.getPlayListWithCantos()
+
+    fun getPlayListWithCantosById(id: Long): Flow<PlayListWithCantos> = playListDao.getPlayListWithCantosById(id)
 
 
     @WorkerThread

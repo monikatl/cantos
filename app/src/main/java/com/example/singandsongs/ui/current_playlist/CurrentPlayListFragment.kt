@@ -85,6 +85,8 @@ class CurrentPlayListFragment : Fragment() {
     }
 
     private fun showDeleteConfirmDialog() {
+        val list = viewModel.playListWithCantos.value.toString()
+        println("BBB $list")
         AlertDialog.Builder(requireContext())
             .setTitle("Czy chcesz usunąć zbiór: ${viewModel.playList.value?.name}?")
             .setPositiveButton("TAK") { dialog, _ -> viewModel.deletePlayList(dialog)}

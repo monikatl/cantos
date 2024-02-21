@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import com.example.singandsongs.utils.SortCondition.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -12,13 +13,14 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.singandsongs.R
 import com.example.singandsongs.databinding.FragmentNotificationsBinding
+import com.example.singandsongs.model.PlayList
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class NotificationsFragment : Fragment() {
 
-    private lateinit var binding: FragmentNotificationsBinding
     private val viewModel: NotificationsViewModel by viewModels()
+    private lateinit var binding: FragmentNotificationsBinding
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -29,12 +31,14 @@ class NotificationsFragment : Fragment() {
 
         binding = FragmentNotificationsBinding.inflate(inflater, container, false)
 
-        val adapter = PlayListAdapter(setCurrentPlayList)
+        val adapter = PlayListAdapter(setCurrentPlayList, showCantosBottomSheet)
         binding.allPlayLists.adapter = adapter
 
         viewModel.playLists.observe(viewLifecycleOwner) {
             adapter.setList(viewModel.playLists.value ?: emptyList())
         }
+
+        viewModel.playListWithCantos.observe(viewLifecycleOwner) {}
 
         binding.addPlayListButton.setOnClickListener { showAddPlayListDialog() }
 
@@ -52,7 +56,19 @@ class NotificationsFragment : Fragment() {
                 viewModel.choseSortCondition(order)
             }
         }
+
         return binding.root
+    }
+
+    private val showCantosBottomSheet: (PlayList) -> Unit = { playList ->
+        viewModel.setChosenPlayListId(playList.playListId)
+        val list = viewModel.playListWithCantos.value?.cantos?.map { it.name } ?: emptyList()
+        if(list.isEmpty())
+            Toast.makeText(requireContext(), "brak pieśni", Toast.LENGTH_SHORT).show()
+        else {
+            val modalBottomSheet = CantosBottomSheet(list)
+            modalBottomSheet.show(requireActivity().supportFragmentManager, CantosBottomSheet.TAG)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

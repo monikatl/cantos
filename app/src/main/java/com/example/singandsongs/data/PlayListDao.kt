@@ -17,6 +17,10 @@ interface PlayListDao {
     @Query("SELECT * FROM play_list_table WHERE is_current = true LIMIT 1")
     fun getPlayListWithCantos(): Flow<PlayListWithCantos>
 
+    @Transaction
+    @Query("SELECT * FROM play_list_table WHERE playListId = :id LIMIT 1")
+    fun getPlayListWithCantosById(id: Long): Flow<PlayListWithCantos>
+
     @Query("SELECT * FROM play_list_table WHERE is_current = true LIMIT 1")
     fun getCurrentPlayList(): Flow<PlayList>
 

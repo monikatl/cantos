@@ -7,7 +7,10 @@ import com.example.singandsongs.databinding.PlayListItemBinding
 import com.example.singandsongs.model.PlayList
 
 
-class PlayListAdapter(val onLongClickAction: (Int) -> Unit):RecyclerView.Adapter<PlayListAdapter.IntentHolder>() {
+class PlayListAdapter(
+    private val onLongClickAction: (Int) -> Unit,
+    private val onItemClickAction: (PlayList) -> Unit
+):RecyclerView.Adapter<PlayListAdapter.IntentHolder>() {
 
     private var datalist:List<PlayList> = emptyList()
 
@@ -34,11 +37,16 @@ class PlayListAdapter(val onLongClickAction: (Int) -> Unit):RecyclerView.Adapter
     }
 
     override fun onBindViewHolder(holder: IntentHolder, position: Int) {
-        holder.bind(datalist[position])
+        val playList = datalist[position]
+        holder.bind(playList)
 
         holder.itemView.setOnLongClickListener {
             onLongClickAction.invoke(position)
             true
+        }
+
+        holder.itemView.setOnClickListener {
+            onItemClickAction.invoke(playList)
         }
     }
 
