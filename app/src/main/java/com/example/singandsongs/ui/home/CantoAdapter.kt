@@ -19,7 +19,8 @@ class CantoAdapter(private val context: Context,
                    private val deleteAction: ((Int) -> Unit)? = null,
                    private val editAction: ((Canto) -> Unit)? = null,
                    private val onClickItem: ((Long) -> Unit)? = null,
-                   private val checkFav: ((Canto) -> Unit)? = null
+                   private val checkFav: ((Canto) -> Unit)? = null,
+                   private val onPlayListClickItem: ((Long) -> Unit)? = null
 ):RecyclerView.Adapter<CantoAdapter.IntentHolder>() {
 
     var datalist:List<Canto> = emptyList()
@@ -70,7 +71,10 @@ class CantoAdapter(private val context: Context,
         val canto = datalist[position]
         holder.bind(canto)
 
-        holder.itemView.setOnClickListener { onClickItem?.invoke(canto.cantoId) }
+        holder.itemView.setOnClickListener {
+            onClickItem?.invoke(canto.cantoId)
+            onPlayListClickItem?.invoke(canto.cantoId)
+        }
 
         if(deleteAction != null) {
             holder.itemView.setOnLongClickListener { view ->

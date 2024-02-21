@@ -45,5 +45,4 @@ interface PlayListDao {
     @Delete
     fun deleteCantoPlayListCrossRef(ref: CantoPlayListCrossRef)
 
-
 }

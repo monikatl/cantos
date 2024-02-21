@@ -33,7 +33,14 @@ class HomeFragment : Fragment() {
         binding.viewModel = homeViewModel
         binding.lifecycleOwner = this
 
-        val adapter = CantoAdapter(requireContext(), deleteCanto, editCanto, homeViewModel.addCantoToCurrentPlayList, homeViewModel.checkFav)
+        val adapter = CantoAdapter(
+            requireContext(),
+            deleteAction = deleteCanto,
+            editAction = editCanto,
+            onClickItem = homeViewModel.addCantoToCurrentPlayList,
+            checkFav = homeViewModel.checkFav
+        )
+
         binding.allCantos.adapter = adapter
 
         homeViewModel.cantos.observe(viewLifecycleOwner) {

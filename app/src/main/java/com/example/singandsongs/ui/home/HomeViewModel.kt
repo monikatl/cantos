@@ -20,26 +20,29 @@ class HomeViewModel @Inject constructor(
         value = FilterCondition.CANTOS
     }
 
-    val filterCondition: LiveData<FilterCondition> = _filterCondition
+    private val filterCondition: LiveData<FilterCondition> = _filterCondition
 
     var cantos: LiveData<List<Canto>> = filterCondition.switchMap { cantoRepository.getAllCantos(it).asLiveData() }
     val playListWithCantos: LiveData<PlayListWithCantos> = playListRepository.getPlayListWithCantos.asLiveData()
 
-    val addCanto: (Int, String, Kind) -> Unit = { number, name, kind ->
+    val addCanto: (Int, String, Kind, String) -> Unit = { number, name, kind, text ->
         val canto = Canto(number, name, kind)
         viewModelScope.launch(Dispatchers.IO) {
-            cantoRepository.insertCanto(canto)
+            val cantoId = cantoRepository.insertCanto(canto)
+            println("CANTO ID $cantoId")
+            val content = Content(cantoId, text)
+            cantoRepository.insertContent(content)
         }
     }
 
-    val addDraft:  (Int, String, Kind) -> Unit = { number, name, kind ->
+    val addDraft:  (Int, String, Kind, String) -> Unit = { number, name, kind, text ->
         val canto = Canto.createDraftCanto(name,number, kind)
         viewModelScope.launch(Dispatchers.IO) {
             cantoRepository.insertCanto(canto)
         }
     }
 
-    val editCanto: (Int, String, Kind) -> Unit = { _, _, _ ->
+    val editCanto: (Int, String, Kind, String) -> Unit = { _, _, _, _ ->
 
     }
 

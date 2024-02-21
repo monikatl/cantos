@@ -61,7 +61,8 @@
                 android:layout_margin="8dp"
                 android:text="@{viewModel.playList.name}"
                 android:textAllCaps="true"
-                android:textSize="36sp"
+                android:textStyle="bold"
+                android:textSize="26sp"
                 app:layout_constraintEnd_toStartOf="@+id/sharePlayList"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

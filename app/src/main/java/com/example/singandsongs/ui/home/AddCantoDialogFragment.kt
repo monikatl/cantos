@@ -2,27 +2,39 @@ package com.example.singandsongs.ui.home
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.*
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.singandsongs.R
+import com.example.singandsongs.databinding.DialogAddCantoBinding
+import com.example.singandsongs.databinding.DialogAddPlaylistBinding
 import com.example.singandsongs.model.Canto
 import com.example.singandsongs.model.Kind
 import com.google.android.material.textfield.TextInputLayout
+import java.net.URLEncoder
 
 
-class AddCantoDialogFragment(private val action: (Int, String, Kind) -> Unit,
+class AddCantoDialogFragment(private val action: (Int, String, Kind, String) -> Unit,
                              val canto: Canto? = null, val draftName: String? = null)  : DialogFragment() {
 
     var name: String = "Nowa pieśń"
     var number: Int = 315
     var kind: Kind = Kind.ACCIDENTAL
+    var text: String? = null
+
+    private lateinit var binding: DialogAddCantoBinding
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = activity?.let {
+            binding = DataBindingUtil.inflate(LayoutInflater.from(requireContext()), R.layout.dialog_add_canto, null, false);
             val builder = AlertDialog.Builder(it)
-            val inflater = requireActivity().layoutInflater;
-            builder.setView(inflater.inflate(R.layout.dialog_add_canto, null))
+            builder.setView(binding.root)
                 .setPositiveButton(if(canto == null)"dodaj" else "zapisz"){ _, _ -> clickPositiveButton() }
                 .setNegativeButton("Anuluj") { dialog, _ -> dialog.dismiss() }
             builder.create()
@@ -36,14 +48,33 @@ class AddCantoDialogFragment(private val action: (Int, String, Kind) -> Unit,
         return dialog
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding.addContentInput.setOnClickListener { addCantoContentInput() }
+        binding.searchButton.setOnClickListener {
+            search(getCantoName())
+        }
+        return binding.root
+    }
+
+    private fun addCantoContentInput() {
+        dialog?.let{
+            binding.addContentInput.visibility = View.GONE
+            text = ""
+            val cantoContent: TextInputLayout = it.findViewById(R.id.cantoContent)
+            cantoContent.visibility = View.VISIBLE
+        }
+
+    }
+
     private fun bindProperties() {
         dialog?.let{
-            val nameText: TextInputLayout = it.findViewById(R.id.name)
-            val numberText: TextInputLayout = it.findViewById(R.id.number)
-            val kindEdit: AutoCompleteTextView = it.findViewById(R.id.kindText)
-            nameText.editText?.setText(canto?.name)
-            numberText.editText?.setText(canto?.number.toString())
-            kindEdit.setText(canto?.kind?.text)
+            binding.name.editText?.setText(canto?.name)
+            binding.number.editText?.setText(canto?.number.toString())
+            binding.kindText.setText(canto?.kind?.text)
         }
     }
 
@@ -66,7 +97,8 @@ class AddCantoDialogFragment(private val action: (Int, String, Kind) -> Unit,
             } catch (e: java.lang.NumberFormatException) {
                 0
             }
-            action.invoke( number, name, kind)
+            text = binding.cantoContentInput.text.toString()
+            action.invoke(number, name, kind, text ?: "")
         }
     }
 
@@ -83,5 +115,21 @@ class AddCantoDialogFragment(private val action: (Int, String, Kind) -> Unit,
                  }
              }
         }
+    }
+
+    private fun getCantoName(): String {
+        return binding.inputName.text.toString()
+    }
+
+    private fun search(query: String) {
+        val searchUri = Uri.parse("https://www.google.com/search?q=${URLEncoder.encode(query, "UTF-8")}")
+        val searchIntent = Intent(Intent.ACTION_VIEW, searchUri)
+        searchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        try {
+            requireActivity().startActivity(searchIntent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
     }
 }

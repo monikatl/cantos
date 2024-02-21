@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singandsongs.databinding.FragmentCurrentPlayListBinding
+import com.example.singandsongs.model.CantoAndContent
 import com.example.singandsongs.ui.home.CantoAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,11 +33,15 @@ class CurrentPlayListFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        val adapter = CantoAdapter(requireContext())
+        val adapter = CantoAdapter(requireContext(), onPlayListClickItem = resolveCantoContent)
         binding.cantosRecyclerView.adapter = adapter
 
-        viewModel.playListWithCantos.observe(viewLifecycleOwner) {
-            adapter.setList(viewModel.playListWithCantos.value?.cantos ?: emptyList())
+
+        with(viewModel){
+            playListWithCantos.observe(viewLifecycleOwner) { adapter.setList(viewModel.playListWithCantos.value?.cantos ?: emptyList()) }
+            cantoContent.observe(viewLifecycleOwner) { it?.let {  showCantoContentDialog(it) } }
+            cantosAndContents.observe(viewLifecycleOwner) {}
+            id.observe(viewLifecycleOwner) {}
         }
 
         val touchHelper = ItemTouchHelper(object : SimpleCallback(UP + DOWN , RIGHT) {
@@ -85,8 +90,6 @@ class CurrentPlayListFragment : Fragment() {
     }
 
     private fun showDeleteConfirmDialog() {
-        val list = viewModel.playListWithCantos.value.toString()
-        println("BBB $list")
         AlertDialog.Builder(requireContext())
             .setTitle("Czy chcesz usunąć zbiór: ${viewModel.playList.value?.name}?")
             .setPositiveButton("TAK") { dialog, _ -> viewModel.deletePlayList(dialog)}
@@ -105,4 +108,19 @@ class CurrentPlayListFragment : Fragment() {
             .show()
     }
 
+    private val resolveCantoContent: (Long) -> Unit = {cantoId ->
+        viewModel.setCurrentCanto(cantoId)
+    }
+
+    private fun showCantoContentDialog(cantoAndContent: CantoAndContent) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(cantoAndContent.canto.name)
+            .setMessage(cantoAndContent.content?.text)
+            .setPositiveButton("OK") {dialog, _ ->
+                dialog.dismiss()
+                viewModel.setCurrentCanto(0)
+            }
+            .create()
+            .show()
+    }
 }
