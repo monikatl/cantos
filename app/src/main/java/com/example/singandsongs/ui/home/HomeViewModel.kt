@@ -66,6 +66,13 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    val addDraftToCantos: (Canto) -> Unit = { canto ->
+        canto.transformDraft()
+        viewModelScope.launch(Dispatchers.IO) {
+            cantoRepository.updateCanto(canto)
+        }
+    }
+
     val checkFav: (Canto) -> Unit = { canto ->
         canto.checkAsFavourite()
         viewModelScope.launch(Dispatchers.IO) {

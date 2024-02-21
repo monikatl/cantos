@@ -18,7 +18,8 @@ import java.util.*
 class CantoAdapter(private val context: Context,
                    private val deleteAction: ((Int) -> Unit)? = null,
                    private val editAction: ((Canto) -> Unit)? = null,
-                   private val onClickItem: ((Long) -> Unit)? = null,
+                   private val onClickItemCanto: ((Long) -> Unit)? = null,
+                   private val onClickItemDraft: ((Canto) -> Unit)? = null,
                    private val checkFav: ((Canto) -> Unit)? = null,
                    private val onPlayListClickItem: ((Long) -> Unit)? = null
 ):RecyclerView.Adapter<CantoAdapter.IntentHolder>() {
@@ -72,7 +73,8 @@ class CantoAdapter(private val context: Context,
         holder.bind(canto)
 
         holder.itemView.setOnClickListener {
-            onClickItem?.invoke(canto.cantoId)
+            if(canto.isDraft) onClickItemDraft?.invoke(canto)
+            if(!canto.isDraft) onClickItemCanto?.invoke(canto.cantoId)
             onPlayListClickItem?.invoke(canto.cantoId)
         }
 

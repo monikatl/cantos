@@ -37,7 +37,8 @@ class HomeFragment : Fragment() {
             requireContext(),
             deleteAction = deleteCanto,
             editAction = editCanto,
-            onClickItem = homeViewModel.addCantoToCurrentPlayList,
+            onClickItemCanto = homeViewModel.addCantoToCurrentPlayList,
+            onClickItemDraft = homeViewModel.addDraftToCantos,
             checkFav = homeViewModel.checkFav
         )
 

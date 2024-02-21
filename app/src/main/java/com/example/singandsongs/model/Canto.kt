@@ -20,6 +20,10 @@ data class Canto(
         isFavourite = !isFavourite
     }
 
+    fun transformDraft() {
+        isDraft = !isDraft
+    }
+
     companion object {
         fun createDraftCanto(name: String, number: Int? = null, kind: Kind? = null): Canto {
             return Canto(number, name, kind, isDraft = true)
