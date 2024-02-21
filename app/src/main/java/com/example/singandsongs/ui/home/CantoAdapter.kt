@@ -7,12 +7,10 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singandsongs.R
 import com.example.singandsongs.databinding.CantoListItemBinding
 import com.example.singandsongs.model.Canto
-import com.example.singandsongs.model.CantoPlayListCrossRef
 import java.net.URLEncoder
 import java.util.*
 

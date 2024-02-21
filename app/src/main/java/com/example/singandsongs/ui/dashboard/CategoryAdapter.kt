@@ -7,8 +7,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-
-
 class CategoryAdapter(private val onCategoryClicked: (Int) -> Unit):RecyclerView.Adapter<CategoryAdapter.IntentHolder>() {
 
     var datalist:List<Kind> = emptyList()

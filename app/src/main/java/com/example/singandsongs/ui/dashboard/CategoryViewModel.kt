@@ -4,10 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.example.singandsongs.data.CantoRepository
-import com.example.singandsongs.data.PlayListRepository
 import com.example.singandsongs.model.Canto
 import com.example.singandsongs.model.Kind
-import com.example.singandsongs.model.PlayListWithCantos
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

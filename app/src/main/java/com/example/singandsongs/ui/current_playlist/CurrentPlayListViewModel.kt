@@ -1,15 +1,10 @@
 package com.example.singandsongs.ui.current_playlist
 
 import android.content.DialogInterface
-import android.os.Build
-import android.view.View
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.singandsongs.data.PlayListRepository
 import com.example.singandsongs.model.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

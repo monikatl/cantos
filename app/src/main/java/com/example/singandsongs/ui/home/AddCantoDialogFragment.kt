@@ -3,13 +3,11 @@ package com.example.singandsongs.ui.home
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.text.Editable
 import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.example.singandsongs.R
 import com.example.singandsongs.model.Canto
 import com.example.singandsongs.model.Kind
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 

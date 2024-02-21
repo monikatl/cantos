@@ -1,18 +1,13 @@
 package com.example.singandsongs.ui.home
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import com.example.singandsongs.data.CantoRepository
 import com.example.singandsongs.data.PlayListRepository
 import com.example.singandsongs.model.*
 import com.example.singandsongs.utils.FilterCondition
-import com.example.singandsongs.utils.SortCondition
-import com.google.android.material.tabs.TabLayout.Tab
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel

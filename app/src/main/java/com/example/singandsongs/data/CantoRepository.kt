@@ -5,8 +5,6 @@ import com.example.singandsongs.model.Canto
 import com.example.singandsongs.model.Kind
 import com.example.singandsongs.utils.FilterCondition
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
