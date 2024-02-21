@@ -10,11 +10,14 @@ interface CantoDao {
     @Query("SELECT * FROM canto_table WHERE is_draft = false")
     fun getAllCantos(): Flow<List<Canto>>
 
-    @Query("SELECT * FROM canto_table WHERE kind = :kind")
-    fun getAllCantosByKind(kind: Kind): Flow<List<Canto>>
-
     @Query("SELECT * FROM canto_table WHERE is_draft = true")
     fun getAllDrafts(): Flow<List<Canto>>
+
+    @Query("SELECT * FROM canto_table WHERE is_favourite = true")
+    fun getAllFavourites(): Flow<List<Canto>>
+
+    @Query("SELECT * FROM canto_table WHERE kind = :kind")
+    fun getAllCantosByKind(kind: Kind): Flow<List<Canto>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCanto(canto: Canto)

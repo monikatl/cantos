@@ -3,17 +3,21 @@ package com.example.singandsongs.data
 import androidx.annotation.WorkerThread
 import com.example.singandsongs.model.Canto
 import com.example.singandsongs.model.Kind
+import com.example.singandsongs.utils.FilterCondition
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class CantoRepository @Inject constructor(
     private val cantoDao: CantoDao
 ) {
-
-    val getAllCantos: Flow<List<Canto>> = cantoDao.getAllCantos()
-    val getAllDrafts: Flow<List<Canto>> = cantoDao.getAllDrafts()
+    fun getAllCantos(condition: FilterCondition) = when(condition) {
+        FilterCondition.CANTOS -> cantoDao.getAllCantos()
+        FilterCondition.DRAFTS -> cantoDao.getAllDrafts()
+        FilterCondition.FAVOURITE -> cantoDao.getAllFavourites()
+    }
 
     fun getCantosByCategory(category: Kind) = cantoDao.getAllCantosByKind(category)
 

@@ -2,13 +2,12 @@ package com.example.singandsongs.ui.home
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.singandsongs.data.CantoRepository
 import com.example.singandsongs.data.PlayListRepository
 import com.example.singandsongs.model.*
+import com.example.singandsongs.utils.FilterCondition
+import com.example.singandsongs.utils.SortCondition
 import com.google.android.material.tabs.TabLayout.Tab
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -22,8 +21,13 @@ class HomeViewModel @Inject constructor(
     private val cantoRepository: CantoRepository
 ) : ViewModel() {
 
-    var cantos: LiveData<List<Canto>> = cantoRepository.getAllCantos.asLiveData()
-    var drafts: LiveData<List<Canto>> = cantoRepository.getAllDrafts.asLiveData()
+    private val _filterCondition = MutableLiveData<FilterCondition>().apply {
+        value = FilterCondition.CANTOS
+    }
+
+    val filterCondition: LiveData<FilterCondition> = _filterCondition
+
+    var cantos: LiveData<List<Canto>> = filterCondition.switchMap { cantoRepository.getAllCantos(it).asLiveData() }
     val playListWithCantos: LiveData<PlayListWithCantos> = playListRepository.getPlayListWithCantos.asLiveData()
 
     val addCanto: (Int, String, Kind) -> Unit = { number, name, kind ->
@@ -51,20 +55,9 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
-
-    fun filterCantosList(group: String) {
-
+    fun checkFilterCondition(filterCondition: FilterCondition) {
+        _filterCondition.value = filterCondition
     }
-
-    fun filterCantos(tab: Tab): List<Canto>? {
-        return when(tab.text) {
-            "Wszystkie" -> cantos.value
-            "Ulubione" -> cantos.value?.filter { it.isFavourite }
-            "Oczekujące" -> drafts.value
-            else -> emptyList()
-        }
-    }
-
 
     val addCantoToCurrentPlayList: (Long) -> Unit = { cantoId ->
         val playListId = playListWithCantos.value?.playList?.playListId

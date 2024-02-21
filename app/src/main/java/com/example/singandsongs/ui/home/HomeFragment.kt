@@ -18,6 +18,7 @@ import com.example.singandsongs.data.DatabaseInit
 import com.example.singandsongs.databinding.FragmentHomeBinding
 import com.example.singandsongs.model.Canto
 import com.example.singandsongs.ui.notifications.AddPlayListDialogFragment
+import com.example.singandsongs.utils.FilterCondition
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -52,15 +53,16 @@ class HomeFragment : Fragment() {
             adapter.setList(homeViewModel.cantos.value ?: emptyList())
         }
 
-        homeViewModel.drafts.observe(viewLifecycleOwner) {
-            adapter.setList(homeViewModel.drafts.value ?: emptyList())
-        }
-
         binding.tabLayout.addOnTabSelectedListener (object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     tab?.let {
-                        val cantos = homeViewModel.filterCantos(it)
-                        adapter.setList(cantos ?: emptyList())
+                        val condition = when(it.position) {
+                            0 -> FilterCondition.CANTOS
+                            1 -> FilterCondition.FAVOURITE
+                            2 -> FilterCondition.DRAFTS
+                            else -> FilterCondition.CANTOS
+                        }
+                        homeViewModel.checkFilterCondition(condition)
                     }
                 }
                 override fun onTabReselected(tab: TabLayout.Tab?) {

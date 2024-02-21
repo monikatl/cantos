@@ -9,3 +9,9 @@ enum class SortCondition {
     ZA,
     BY_ID
 }
+
+enum class FilterCondition {
+    CANTOS,
+    DRAFTS,
+    FAVOURITE
+}

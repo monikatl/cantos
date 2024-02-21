@@ -50,20 +50,22 @@
             app:layout_constraintTop_toBottomOf="@+id/search"
             app:tabMode="fixed">
 
-
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/cantosTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Wszystkie"
                 android:icon="@drawable/all_layers_svgrepo_com"/>
 
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/favouritesTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ulubione"
                 android:icon="@drawable/favourite_alt_svgrepo_com"/>
 
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/draftsTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Oczekujące"
