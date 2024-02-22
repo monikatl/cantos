@@ -24,6 +24,8 @@ class CantoRepository @Inject constructor(
 
     fun getCantosAndContents() = cantoDao.getCantosAndContents()
 
+    fun getAllContents() = cantoDao.getAllContents()
+
     @WorkerThread
     suspend fun insertCanto(canto: Canto) = withContext(Dispatchers.IO) {
         cantoDao.insertCanto(canto)
@@ -42,6 +44,11 @@ class CantoRepository @Inject constructor(
     @WorkerThread
     suspend fun deleteCanto(canto: Canto) = withContext(Dispatchers.IO) {
         cantoDao.deleteCanto(canto)
+    }
+
+    @WorkerThread
+    suspend fun updateContent(content: Content)  = withContext(Dispatchers.IO) {
+        cantoDao.updateContent(content)
     }
 
 }

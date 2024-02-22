@@ -24,27 +24,41 @@ class HomeViewModel @Inject constructor(
     private val filterCondition: LiveData<FilterCondition> = _filterCondition
 
     var cantos: LiveData<List<Canto>> = filterCondition.switchMap { cantoRepository.getAllCantos(it).asLiveData() }
+    var contents: LiveData<List<Content>> = cantoRepository.getAllContents().asLiveData()
     val playListWithCantos: LiveData<PlayListWithCantos> = playListRepository.getPlayListWithCantos.asLiveData()
 
-    val addCanto: (Int, String, Kind, String) -> Unit = { number, name, kind, text ->
+    val addCanto: (Int, String, Kind, String, Canto?) -> Unit = { number, name, kind, text, _ ->
         val canto = Canto(number, name, kind)
         viewModelScope.launch(Dispatchers.IO) {
             val cantoId = cantoRepository.insertCanto(canto)
-            println("CANTO ID $cantoId")
             val content = Content(cantoId, text)
             cantoRepository.insertContent(content)
         }
     }
 
-    val addDraft:  (Int, String, Kind, String) -> Unit = { number, name, kind, text ->
+    val addDraft:  (Int, String, Kind, String, Canto?) -> Unit = { number, name, kind, text, _ ->
         val canto = Canto.createDraftCanto(name,number, kind)
         viewModelScope.launch(Dispatchers.IO) {
-            cantoRepository.insertCanto(canto)
+            val cantoId = cantoRepository.insertCanto(canto)
+            val content = Content(cantoId, text)
+            cantoRepository.insertContent(content)
         }
     }
 
-    val editCanto: (Int, String, Kind, String) -> Unit = { _, _, _, _ ->
-
+    val editCanto: (Int, String, Kind, String, Canto?) -> Unit = { number, name, kind, text, canto ->
+        canto?.let{
+            it.number = number
+            it.name = name
+            it.kind = kind
+            val content = contents.value?.first { c ->  c.contentId == it.cantoId   }
+            content?.text = text
+            viewModelScope.launch {
+                cantoRepository.updateCanto(it)
+                content?.let {content ->
+                    cantoRepository.updateContent(content)
+                }
+            }
+        }
     }
 
     fun deleteCanto(position: Int) {

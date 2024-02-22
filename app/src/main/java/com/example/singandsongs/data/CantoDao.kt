@@ -25,6 +25,9 @@ interface CantoDao {
     @Query("SELECT * FROM canto_table WHERE cantoId = :id LIMIT 1")
     fun getCantoAndContent(id: Long): Flow<CantoAndContent>
 
+    @Query("SELECT * FROM content_table")
+    fun getAllContents(): Flow<List<Content>>
+
     @Transaction
     @Query("SELECT * FROM canto_table")
     fun getCantosAndContents(): Flow<List<CantoAndContent>>
@@ -40,4 +43,6 @@ interface CantoDao {
 
     @Delete
     fun deleteCanto(canto: Canto)
+    @Update
+    fun updateContent(content: Content)
 }

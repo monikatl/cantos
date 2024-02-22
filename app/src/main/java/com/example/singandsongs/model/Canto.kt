@@ -6,9 +6,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "canto_table")
 data class Canto(
-    val number: Int?,
-    val name: String,
-    val kind: Kind?,
+    var number: Int?,
+    var name: String,
+    var kind: Kind?,
     @ColumnInfo(name = "is_favourite")
     var isFavourite: Boolean = false,
     @ColumnInfo(name = "is_draft")
