@@ -37,7 +37,7 @@
         android:name="com.example.singandsongs.ui.current_playlist.CurrentPlayListFragment"
         android:label="PlayLista"
         tools:layout="@layout/fragment_current_play_list" />
-    
+
     <fragment
         android:id="@+id/categoryFragment"
         android:name="com.example.singandsongs.ui.dashboard.CategoryFragment"

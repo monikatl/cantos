@@ -14,6 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -28,8 +29,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        CoroutineScope(Dispatchers.IO).launch {
-            databaseInitializer.initialize()
+        if(!databaseExists()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                databaseInitializer.initialize()
+            }
         }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -48,6 +51,13 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    private val databaseName = "CantoDatabase"
+
+    private fun databaseExists(): Boolean {
+        val databaseFile = File(this.getDatabasePath(databaseName).path)
+        return databaseFile.exists()
     }
 
     override fun onSupportNavigateUp(): Boolean {
