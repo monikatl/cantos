@@ -11,6 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="100dp"
         tools:context=".ui.home.HomeFragment">
 
         <androidx.appcompat.widget.AppCompatImageButton
@@ -90,7 +91,6 @@
             android:id="@+id/addCantoButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="120dp"
             android:layout_marginRight="16dp"
             android:backgroundTint="@color/teal_700"
             app:icon="@drawable/baseline_add_24"

@@ -73,8 +73,8 @@ class CantoAdapter(private val context: Context,
         holder.bind(canto)
 
         holder.itemView.setOnClickListener {
-            if(canto.isDraft) onClickItemDraft?.invoke(canto)
             if(!canto.isDraft) onClickItemCanto?.invoke(canto.cantoId)
+            if(canto.isDraft) onClickItemDraft?.invoke(canto)
             onPlayListClickItem?.invoke(canto.cantoId)
         }
 

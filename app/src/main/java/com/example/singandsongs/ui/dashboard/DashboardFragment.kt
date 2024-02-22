@@ -8,6 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.singandsongs.R
 import com.example.singandsongs.databinding.FragmentDashboardBinding
@@ -45,6 +46,14 @@ class DashboardFragment : Fragment() {
     private val navigateToCategoryFragment: (Int) -> Unit = {
         val category = Kind.values()[it]
         val bundle = bundleOf("category" to category.name)
-        findNavController().navigate(R.id.action_navigation_dashboard_to_categoryFragment, bundle)
+        val options = navOptions {
+            anim {
+                enter = R.anim.slide_in_right
+                exit = R.anim.slide_out_left
+                popEnter = R.anim.slide_in_left
+                popExit = R.anim.slide_out_right
+            }
+        }
+        findNavController().navigate(R.id.action_navigation_dashboard_to_categoryFragment, bundle, options)
     }
 }

@@ -14,6 +14,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="4dp"
+    android:layout_marginBottom="100dp"
     tools:context=".ui.notifications.NotificationsFragment">
 
     <com.google.android.material.button.MaterialButtonToggleGroup
@@ -92,7 +93,6 @@
         android:id="@+id/addPlayListButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="114dp"
         android:layout_marginRight="12dp"
         android:backgroundTint="@color/teal_700"
         android:contentDescription="@string/extended_fab_content_desc"
