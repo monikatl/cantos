@@ -8,11 +8,16 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
+import com.example.singandsongs.R
 import com.example.singandsongs.databinding.FragmentHomeBinding
 import com.example.singandsongs.model.Canto
 import com.example.singandsongs.utils.FilterCondition
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -38,7 +43,7 @@ class HomeFragment : Fragment() {
             deleteAction = deleteCanto,
             editAction = editCanto,
             onClickItemCanto = homeViewModel.addCantoToCurrentPlayList,
-            onClickItemDraft = homeViewModel.addDraftToCantos,
+            onClickItemDraft = addDraftToCantos,
             checkFav = homeViewModel.checkFav
         )
 
@@ -141,6 +146,11 @@ class HomeFragment : Fragment() {
         newFragment.show(activity?.supportFragmentManager!!, "edit_canto")
     }
 
+    private val addDraftToCantos: (Canto) -> Unit = { canto ->
+        homeViewModel.transformDraft(canto)
+        Snackbar.make(binding.root, R.string.snackbar_draft_label, Snackbar.LENGTH_LONG)
+            .setAction("Cofnij") { homeViewModel.undoAddDraftToCantos(canto) }.show()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

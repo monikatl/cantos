@@ -8,6 +8,7 @@ import com.example.singandsongs.utils.FilterCondition
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -66,11 +67,15 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    val addDraftToCantos: (Canto) -> Unit = { canto ->
+    fun transformDraft(canto: Canto){
         canto.transformDraft()
         viewModelScope.launch(Dispatchers.IO) {
             cantoRepository.updateCanto(canto)
         }
+    }
+
+    fun undoAddDraftToCantos(canto: Canto) {
+        if(!canto.isDraft) transformDraft(canto)
     }
 
     val checkFav: (Canto) -> Unit = { canto ->

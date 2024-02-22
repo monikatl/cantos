@@ -6,4 +6,5 @@
     <string name="extended_fab_content_desc">dodaj zestaw</string>
     <string name="add_list_fab">dodaj zestaw</string>
     <string name="add_canto_fab">dodaj pieśń</string>
+    <string name="snackbar_draft_label">Przeniesiono szkic na listę pieśni.</string>
 </resources>
