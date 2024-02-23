@@ -13,14 +13,13 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.singandsongs.R
 import com.example.singandsongs.databinding.FragmentNotificationsBinding
-import com.example.singandsongs.model.PlayList
 import dagger.hilt.android.AndroidEntryPoint
-
 @AndroidEntryPoint
 class NotificationsFragment : Fragment() {
 
     private val viewModel: NotificationsViewModel by viewModels()
     private lateinit var binding: FragmentNotificationsBinding
+    var list = emptyList<String>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -31,14 +30,16 @@ class NotificationsFragment : Fragment() {
 
         binding = FragmentNotificationsBinding.inflate(inflater, container, false)
 
-        val adapter = PlayListAdapter(setCurrentPlayList, showCantosBottomSheet)
+        val adapter = PlayListAdapter(setCurrentPlayList, resolveCantoContent)
         binding.allPlayLists.adapter = adapter
 
         viewModel.playLists.observe(viewLifecycleOwner) {
             adapter.setList(viewModel.playLists.value ?: emptyList())
         }
 
-        viewModel.playListWithCantos.observe(viewLifecycleOwner) {}
+        viewModel.id.observe(viewLifecycleOwner) {  }
+
+        viewModel.playListWithCantos.observe(viewLifecycleOwner) { if(viewModel.id.value != 0L) showCantosBottomSheet() }
 
         binding.addPlayListButton.setOnClickListener { showAddPlayListDialog() }
 
@@ -60,15 +61,8 @@ class NotificationsFragment : Fragment() {
         return binding.root
     }
 
-    private val showCantosBottomSheet: (PlayList) -> Unit = { playList ->
-        viewModel.setChosenPlayListId(playList.playListId)
-        val list = viewModel.playListWithCantos.value?.cantos?.map { it.name } ?: emptyList()
-        if(list.isEmpty())
-            Toast.makeText(requireContext(), "brak pieśni", Toast.LENGTH_SHORT).show()
-        else {
-            val modalBottomSheet = CantosBottomSheet(list)
-            modalBottomSheet.show(requireActivity().supportFragmentManager, CantosBottomSheet.TAG)
-        }
+    private val resolveCantoContent: (Long) -> Unit = {playListId ->
+        viewModel.setChosenPlayListId(playListId)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -82,6 +76,20 @@ class NotificationsFragment : Fragment() {
         val currentPlayList = viewModel.setCurrentPlayList(position)
         if(currentPlayList != null)
             showInfoDialog(currentPlayList.name)
+    }
+
+    private fun showCantosBottomSheet() {
+        val list = viewModel.playListWithCantos.value?.cantos?.map { it.name } ?: emptyList()
+        if(list.isEmpty())
+            Toast.makeText(requireContext(), "brak pieśni", Toast.LENGTH_SHORT).show()
+        else {
+            val modalBottomSheet = CantosBottomSheet(list, clearPlayListId)
+            modalBottomSheet.show(requireActivity().supportFragmentManager, CantosBottomSheet.TAG)
+        }
+    }
+
+    private val clearPlayListId: () -> Unit = {
+        viewModel.setChosenPlayListId(0)
     }
 
     private fun showInfoDialog(playListName: String) = AlertDialog.Builder(requireContext())

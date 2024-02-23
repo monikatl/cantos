@@ -9,7 +9,7 @@ import com.example.singandsongs.model.PlayList
 
 class PlayListAdapter(
     private val onLongClickAction: (Int) -> Unit,
-    private val onItemClickAction: (PlayList) -> Unit
+    private val onItemClickAction: (Long) -> Unit
 ):RecyclerView.Adapter<PlayListAdapter.IntentHolder>() {
 
     private var datalist:List<PlayList> = emptyList()
@@ -46,7 +46,7 @@ class PlayListAdapter(
         }
 
         holder.itemView.setOnClickListener {
-            onItemClickAction.invoke(playList)
+            onItemClickAction.invoke(playList.playListId)
         }
     }
 

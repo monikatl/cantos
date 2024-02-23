@@ -1,6 +1,7 @@
 package com.example.singandsongs.ui.notifications
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
-class CantosBottomSheet (val list: List<String>): BottomSheetDialogFragment() {
+class CantosBottomSheet (val list: List<String>, val actionOnDismiss: () -> Unit): BottomSheetDialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +40,12 @@ class CantosBottomSheet (val list: List<String>): BottomSheetDialogFragment() {
             }
         }
         return super.onCreateDialog(savedInstanceState)
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        actionOnDismiss.invoke()
+
     }
 
     companion object {

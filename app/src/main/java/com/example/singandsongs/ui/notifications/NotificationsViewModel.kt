@@ -3,14 +3,12 @@ package com.example.singandsongs.ui.notifications
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
-import androidx.lifecycle.LiveData
 import com.example.singandsongs.data.PlayListRepository
 import com.example.singandsongs.model.PlayList
 import com.example.singandsongs.model.PlayListWithCantos
 import com.example.singandsongs.utils.SortCondition
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -20,7 +18,7 @@ class NotificationsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _id = MutableLiveData<Long>().apply {
-        value = 1
+        value = 0
     }
     val id: LiveData<Long> = _id
 
@@ -70,7 +68,7 @@ class NotificationsViewModel @Inject constructor(
         _sortCondition.value = condition
     }
 
-    fun setChosenPlayListId(id: Long) {
+    fun setChosenPlayListId(id: Long){
         _id.value = id
     }
 }
