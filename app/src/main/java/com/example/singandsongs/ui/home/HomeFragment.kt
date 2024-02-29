@@ -22,6 +22,8 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val homeViewModel: HomeViewModel by viewModels()
 
+    private var currentTab = FilterCondition.CANTOS
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -77,6 +79,7 @@ class HomeFragment : Fragment() {
                         else -> FilterCondition.CANTOS
                     }
                     homeViewModel.checkFilterCondition(condition)
+                    currentTab = condition
                 }
             }
             override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -139,8 +142,14 @@ class HomeFragment : Fragment() {
     }
 
     private fun showAddCantoDialog() {
-        val newFragment = AddCantoDialogFragment(homeViewModel.addCanto)
-        newFragment.show(activity?.supportFragmentManager!!, "add_canto")
+        var action = homeViewModel.addCanto
+        var tag = "add_canto"
+        if(currentTab == FilterCondition.DRAFTS) {
+            action = homeViewModel.addDraft
+            tag = "add_draft"
+        }
+        val newFragment = AddCantoDialogFragment(action)
+        newFragment.show(activity?.supportFragmentManager!!,  tag)
     }
 
     private fun showEditCantoDialog(canto: Canto? = null) {
