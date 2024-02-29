@@ -68,7 +68,6 @@ object Cantos {
         Canto(917, "CONFTEMINI DOMINO", THE_GREAT_FAST),
         Canto(918, "PRAWDA JEDYNA", THE_GREAT_FAST),
         Canto(919, "SCHOWAJ MNIE", THE_GREAT_FAST),
-
         Canto(221, "ALLELUJA JEZUS ŻYJE", EASTER),
         Canto(222, "CHRYSTUS ZMARTWYCHWSTAN JEST", EASTER),
         Canto(223, "OTRZYJCIE JUŻ ŁZY PŁACZĄCY", EASTER),
@@ -84,7 +83,6 @@ object Cantos {
         Canto(1222, "NIE ZNA ŚMIERCI PAN ŻYWOTA", EASTER),
         Canto(1223, "WYSŁAWIAJMY CHRYSTA PANA", EASTER),
         Canto(1224, "ZŁÓŻCIE TROSKI", EASTER),
-
         Canto(232, "O CHRYSTE NASZ PANIE", EASTER),
         Canto(233, "WESEL SIĘ KRÓLOWO MIŁA (W NIEBO WSTĄPIŁ PAN)", EASTER),
         Canto(234, "CIESZ SIĘ, KRÓLOWO ANIELSKA", EASTER),
@@ -96,20 +94,16 @@ object Cantos {
         Canto(239, "CHRYSTUS PAN ZMARTWYCHWSTAŁ", EASTER),
         Canto(1204, "PODARUJ MI PANIE", EASTER),
         Canto(271, "OTO SĄ BARANKI MŁODE", EASTER),
-
         Canto(241, "BĄDŹ POZDROWIONA", EUCHARISTIC),
         Canto(242, "BYĆ BLISKO CIEBIE CHCĘ", EUCHARISTIC),
         Canto(243, "BYĆ BLIŻEJ CIEBIE CHCĘ", EUCHARISTIC),
         Canto(244, "CHRYSTUS PAN KARMI NAS", EUCHARISTIC),
         Canto(245, "CHWALMY NIEWYSŁOWIONY", EUCHARISTIC),
-
-
         Canto(245, "O ZBAWCZA HOSTIO", EUCHARISTIC),
         Canto(245, "PRZED TAK WIELKIM SAKRAMENTEM", EUCHARISTIC),
         Canto(245, "CHWAŁA I DZIĘKCZYNIENIE", EUCHARISTIC),
         Canto(245, "ŚWIĘTY BOŻE", ACCIDENTAL),
         Canto(245, "U CIEBIE, BOŻE, MIŁOSIERDZIA WZYWAM", ACCIDENTAL),
-
         Canto(101, "ARCHANIOŁ BOŻY GABRYJEL", ADVENT),
         Canto(102, "CZEKAM NA CIEBIE DOBRY BOŻE", ADVENT),
         Canto(103, "CZEKAM NA CIEBIE JEZU MÓJ MAŁY", ADVENT),
@@ -127,8 +121,6 @@ object Cantos {
         Canto(1104, "BOŻE WIECZNY, BOŻE ŻYWY", ADVENT),
         Canto(1105, "GŁOS WDZIĘCZNY Z NIEBA WYCHODZI", ADVENT),
         Canto(1106, "MĄDROŚCI, KTÓRA", ADVENT),
-
-
         Canto(121, "ACH UBOGI ŻŁOBIE", CAROLS),
         Canto(122, "ANIOŁ PASTERZOM", CAROLS),
         Canto(123, "BÓG SIĘ RODZI", CAROLS),
@@ -172,9 +164,6 @@ object Cantos {
         Canto(161, "MIZERNA CICHA (NAD NIM ANIELI)", CAROLS),
         Canto(162, "ODDAWALI SWE UKŁONY", CAROLS),
         Canto(163, "ŚWIATŁO NA OŚWIECENIE POGAN", CAROLS),
-
-
-
         Canto(324, "BĄDŹ POZDROWIONA", TO_THE_MOTHER_OF_GOD),
         Canto(325, "BIEDNY, KTO CIEBIE", TO_THE_MOTHER_OF_GOD),
         Canto(326, "BŁĘKITNE ROZWIŃMY SZTANDARY", TO_THE_MOTHER_OF_GOD),
@@ -191,6 +180,6 @@ object Cantos {
         Canto(337, "IDŹMY TULMY SIĘ JAK DZIATKI", TO_THE_MOTHER_OF_GOD),
         Canto(338, "JAK PACIORKI RÓŻAŃCA", TO_THE_MOTHER_OF_GOD),
         Canto(339, "JAK SZCZĘŚLIWA POLSKA CAŁA", TO_THE_MOTHER_OF_GOD),
-        Canto(340, "JEST ZAKĄTEK NA TEJ ZIEMI", TO_THE_MOTHER_OF_GOD),
+        Canto(340, "JEST ZAKĄTEK NA TEJ ZIEMI", TO_THE_MOTHER_OF_GOD)
     )
 }

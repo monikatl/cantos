@@ -42,7 +42,4 @@ class CategoryFragment : Fragment() {
 
         return binding.root
     }
-
-
-
 }

@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
-    private val databaseName = "CantoDatabase"
+    private val databaseName = "CantoDatabase.db"
 
     private fun databaseExists(): Boolean {
         val databaseFile = File(this.getDatabasePath(databaseName).path)
