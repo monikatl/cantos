@@ -19,19 +19,15 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
+    private lateinit var binding: FragmentHomeBinding
     private val homeViewModel: HomeViewModel by viewModels()
-
-    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.viewModel = homeViewModel
         binding.lifecycleOwner = this
 
@@ -45,32 +41,8 @@ class HomeFragment : Fragment() {
         )
 
         binding.allCantos.adapter = adapter
-
-        homeViewModel.cantos.observe(viewLifecycleOwner) {
-            adapter.setList(homeViewModel.cantos.value ?: emptyList())
-        }
-
-        binding.tabLayout.addOnTabSelectedListener (object : TabLayout.OnTabSelectedListener {
-                override fun onTabSelected(tab: TabLayout.Tab?) {
-                    tab?.let {
-                        val condition = when(it.position) {
-                            0 -> FilterCondition.CANTOS
-                            1 -> FilterCondition.FAVOURITE
-                            2 -> FilterCondition.DRAFTS
-                            else -> FilterCondition.CANTOS
-                        }
-                        homeViewModel.checkFilterCondition(condition)
-                    }
-                }
-                override fun onTabReselected(tab: TabLayout.Tab?) {
-                    // Handle tab reselect
-                }
-                override fun onTabUnselected(tab: TabLayout.Tab?) {
-                    // Handle tab unselect
-                }
-        })
-
-        homeViewModel.playListWithCantos.observe(viewLifecycleOwner) {}
+        setObservers(adapter)
+        resolveTabLayout()
 
         binding.search.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener,
            SearchView.OnQueryTextListener {
@@ -86,6 +58,39 @@ class HomeFragment : Fragment() {
         binding.addCantoButton.setOnClickListener { showAddCantoDialog() }
 
         return binding.root
+    }
+
+    private fun setObservers(adapter: CantoAdapter) {
+        homeViewModel.cantos.observe(viewLifecycleOwner) { adapter.setList(homeViewModel.cantos.value ?: emptyList()) }
+        homeViewModel.drafts.observe(viewLifecycleOwner) { resolveDraftBadge() }
+        homeViewModel.playListWithCantos.observe(viewLifecycleOwner) {}
+    }
+
+    private fun resolveTabLayout() {
+        binding.tabLayout.addOnTabSelectedListener (object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.let {
+                    val condition = when(it.position) {
+                        0 -> FilterCondition.CANTOS
+                        1 -> FilterCondition.FAVOURITE
+                        2 -> FilterCondition.DRAFTS
+                        else -> FilterCondition.CANTOS
+                    }
+                    homeViewModel.checkFilterCondition(condition)
+                }
+            }
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                // Handle tab reselect
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                // Handle tab unselect
+            }
+        })
+    }
+
+    private fun resolveDraftBadge() {
+        val badge = binding.tabLayout.getTabAt(2)?.orCreateBadge
+        badge?.number = homeViewModel.drafts.value?.size ?: 0
     }
 
     private val deleteCanto: (Int) -> Unit = { showDeleteCantoConfirmationDialog(it) }
@@ -129,7 +134,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun showAddDraftDialog(name: String) {
-        val newFragment = AddCantoDialogFragment(homeViewModel.addDraft, draftName = name)
+        val newFragment = AddCantoDialogFragment(action = homeViewModel.addDraft, draftName = name)
         newFragment.show(activity?.supportFragmentManager!!, "add_draft")
     }
 
@@ -139,7 +144,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun showEditCantoDialog(canto: Canto? = null) {
-        val newFragment = AddCantoDialogFragment(homeViewModel.editCanto, canto)
+        val newFragment = AddCantoDialogFragment(homeViewModel.editCanto, canto = canto)
         newFragment.show(activity?.supportFragmentManager!!, "edit_canto")
     }
 
@@ -147,10 +152,5 @@ class HomeFragment : Fragment() {
         homeViewModel.transformDraft(canto)
         Snackbar.make(binding.root, R.string.snackbar_draft_label, Snackbar.LENGTH_LONG)
             .setAction("Cofnij") { homeViewModel.undoAddDraftToCantos(canto) }.show()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

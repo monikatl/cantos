@@ -7,6 +7,9 @@ import com.example.singandsongs.model.*
 import com.example.singandsongs.utils.FilterCondition
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.count
+import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.reduce
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -24,8 +27,10 @@ class HomeViewModel @Inject constructor(
     private val filterCondition: LiveData<FilterCondition> = _filterCondition
 
     var cantos: LiveData<List<Canto>> = filterCondition.switchMap { cantoRepository.getAllCantos(it).asLiveData() }
-    var contents: LiveData<List<Content>> = cantoRepository.getAllContents().asLiveData()
+    var drafts: LiveData<List<Canto>> =  cantoRepository.getAllCantos(FilterCondition.DRAFTS).asLiveData()
+    private var contents: LiveData<List<Content>> = cantoRepository.getAllContents().asLiveData()
     val playListWithCantos: LiveData<PlayListWithCantos> = playListRepository.getPlayListWithCantos.asLiveData()
+
 
     val addCanto: (Int, String, Kind, String, Canto?) -> Unit = { number, name, kind, text, _ ->
         val canto = Canto(number, name, kind)
