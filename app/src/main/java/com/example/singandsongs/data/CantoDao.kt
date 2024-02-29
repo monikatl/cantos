@@ -9,10 +9,10 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CantoDao {
-    @Query("SELECT * FROM canto_table WHERE is_draft = false")
+    @Query("SELECT * FROM canto_table WHERE is_draft = false ORDER BY cantoId DESC")
     fun getAllCantos(): Flow<List<Canto>>
 
-    @Query("SELECT * FROM canto_table WHERE is_draft = true")
+    @Query("SELECT * FROM canto_table WHERE is_draft = true ORDER BY cantoId DESC")
     fun getAllDrafts(): Flow<List<Canto>>
 
     @Query("SELECT * FROM canto_table WHERE is_favourite = true")
