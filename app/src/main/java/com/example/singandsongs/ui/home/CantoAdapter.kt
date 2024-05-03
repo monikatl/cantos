@@ -1,9 +1,7 @@
 package com.example.singandsongs.ui.home
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
@@ -11,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.singandsongs.R
 import com.example.singandsongs.databinding.CantoListItemBinding
 import com.example.singandsongs.model.Canto
-import java.net.URLEncoder
 import java.util.*
+import com.example.singandsongs.utils.*
 
 
 class CantoAdapter(private val context: Context,
@@ -89,7 +87,7 @@ class CantoAdapter(private val context: Context,
                             true
                         }
                         R.id.action_search -> {
-                            searchOnGoogle(canto.name)
+                            searchOnGoogle(context, canto.name)
                             true
                         }
                         R.id.action_edit -> {
@@ -108,16 +106,7 @@ class CantoAdapter(private val context: Context,
             }
         }
     }
-    private fun searchOnGoogle(query: String) {
-        val searchUri = Uri.parse("https://www.google.com/search?q=${URLEncoder.encode(query, "UTF-8")}")
-        val searchIntent = Intent(Intent.ACTION_VIEW, searchUri)
-        searchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        try {
-            context.startActivity(searchIntent)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
+
 
     override fun getItemCount(): Int {
         return datalist.size

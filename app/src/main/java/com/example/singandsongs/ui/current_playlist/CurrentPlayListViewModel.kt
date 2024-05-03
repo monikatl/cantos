@@ -46,4 +46,13 @@ class CurrentPlayListViewModel @Inject constructor(
     fun setCurrentCanto(id: Long) {
         _id.value = id
     }
+
+    fun addContentToCanto(cantoAndContent: CantoAndContent) {
+        viewModelScope.launch {
+            cantoRepository.updateCanto(cantoAndContent.canto)
+            cantoAndContent.content?.let {
+                cantoRepository.updateContent(Content(cantoAndContent.canto.cantoId, "ttttt"))
+            }
+        }
+    }
 }

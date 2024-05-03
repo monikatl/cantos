@@ -43,6 +43,7 @@ interface CantoDao {
 
     @Delete
     fun deleteCanto(canto: Canto)
+
     @Update
     fun updateContent(content: Content)
 }

@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import com.example.singandsongs.R
 import com.example.singandsongs.databinding.FragmentHomeBinding
 import com.example.singandsongs.model.Canto
+import com.example.singandsongs.model.Kind
 import com.example.singandsongs.utils.FilterCondition
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
@@ -142,14 +143,19 @@ class HomeFragment : Fragment() {
     }
 
     private fun showAddCantoDialog() {
-        var action = homeViewModel.addCanto
-        var tag = "add_canto"
-        if(currentTab == FilterCondition.DRAFTS) {
-            action = homeViewModel.addDraft
-            tag = "add_draft"
-        }
+        val (action, tag) = resolveDraftOrCantoDialog()
         val newFragment = AddCantoDialogFragment(action)
         newFragment.show(activity?.supportFragmentManager!!,  tag)
+    }
+
+    private fun resolveDraftOrCantoDialog(): Pair<(Int, String, Kind, String, Canto?) -> Unit, String> {
+      var action = homeViewModel.addCanto
+      var tag = "add_canto"
+      if(currentTab == FilterCondition.DRAFTS) {
+        action = homeViewModel.addDraft
+        tag = "add_draft"
+      }
+      return Pair(action, tag)
     }
 
     private fun showEditCantoDialog(canto: Canto? = null) {

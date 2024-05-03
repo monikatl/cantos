@@ -8,13 +8,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
+import com.example.singandsongs.R
 import com.example.singandsongs.databinding.FragmentCurrentPlayListBinding
 import com.example.singandsongs.model.CantoAndContent
 import com.example.singandsongs.ui.home.CantoAdapter
+import com.example.singandsongs.utils.searchOnGoogle
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -39,7 +44,7 @@ class CurrentPlayListFragment : Fragment() {
 
         with(viewModel){
             playListWithCantos.observe(viewLifecycleOwner) { adapter.setList(viewModel.playListWithCantos.value?.cantos ?: emptyList()) }
-            cantoContent.observe(viewLifecycleOwner) { it?.let {  showCantoContentDialog(it) } }
+            cantoContent.observe(viewLifecycleOwner) { it?.let {  resolveCantoContentAction(it) } }
             cantosAndContents.observe(viewLifecycleOwner) {}
             id.observe(viewLifecycleOwner) {}
         }
@@ -110,6 +115,37 @@ class CurrentPlayListFragment : Fragment() {
 
     private val resolveCantoContent: (Long) -> Unit = {cantoId ->
         viewModel.setCurrentCanto(cantoId)
+    }
+
+    private fun resolveCantoContentAction(cantoAndContent: CantoAndContent) {
+        if(cantoAndContent.content?.text.isNullOrBlank())
+            showNoContentSnackbar(cantoAndContent)
+        else
+            showCantoContentDialog(cantoAndContent)
+    }
+
+    private fun showNoContentSnackbar(cantoAndContent: CantoAndContent) {
+        Snackbar.make(binding.root, "Brak tekstu pieśni", Snackbar.LENGTH_LONG)
+            .setAction("Dodaj treść") { showCantoContentAddDialog(cantoAndContent) }
+            .show()
+    }
+
+    private fun showCantoContentAddDialog(cantoAndContent: CantoAndContent) {
+        val name = cantoAndContent.canto.name
+        AlertDialog.Builder(requireContext())
+            .setTitle(name)
+            .setView(R.layout.dialog_add_canto_content)
+            .setPositiveButton("DODAJ") {dialog, _ ->
+                val text = view?.findViewById<TextInputEditText>(R.id.cantoContentInput)
+                cantoAndContent.content?.text = text?.text.toString()
+                viewModel.addContentToCanto(cantoAndContent)
+                dialog.dismiss()
+            }
+            .setNeutralButton ("WYSZUKAJ") { _, _ ->
+                searchOnGoogle(requireContext(), name)
+            }
+            .create()
+            .show()
     }
 
     private fun showCantoContentDialog(cantoAndContent: CantoAndContent) {

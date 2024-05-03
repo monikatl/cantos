@@ -55,7 +55,7 @@ class HomeViewModel @Inject constructor(
             it.number = number
             it.name = name
             it.kind = kind
-            val content = contents.value?.first { c ->  c.contentId == it.cantoId   }
+            val content = contents.value?.first { c ->  c.cantoId == it.cantoId   }
             content?.text = text
             viewModelScope.launch {
                 cantoRepository.updateCanto(it)
