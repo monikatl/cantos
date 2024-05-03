@@ -79,7 +79,7 @@ class NotificationsFragment : Fragment() {
     }
 
     private fun showCantosBottomSheet() {
-        val list = viewModel.playListWithCantos.value?.cantos?.map { it.name } ?: emptyList()
+        val list = viewModel.playListWithCantos.value?.cantos?.map { it.number.toString() + ". " + it.name  } ?: emptyList()
         if(list.isEmpty())
             Toast.makeText(requireContext(), "brak pieśni", Toast.LENGTH_SHORT).show()
         else {

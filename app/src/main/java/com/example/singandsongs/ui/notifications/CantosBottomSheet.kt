@@ -45,7 +45,6 @@ class CantosBottomSheet (val list: List<String>, val actionOnDismiss: () -> Unit
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         actionOnDismiss.invoke()
-
     }
 
     companion object {
