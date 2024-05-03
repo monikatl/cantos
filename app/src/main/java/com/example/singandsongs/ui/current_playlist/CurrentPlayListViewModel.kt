@@ -27,6 +27,8 @@ class CurrentPlayListViewModel @Inject constructor(
     val cantoContent: LiveData<CantoAndContent> = id.switchMap { cantoRepository.getCantoAndContent(it).asLiveData()  }
     val cantosAndContents: LiveData<List<CantoAndContent>> = cantoRepository.getCantosAndContents().asLiveData()
 
+    val isQueueMode: Boolean = true
+
     fun deletePlayList(dialog: DialogInterface?) {
         playList.value?.let {
             viewModelScope.launch {
