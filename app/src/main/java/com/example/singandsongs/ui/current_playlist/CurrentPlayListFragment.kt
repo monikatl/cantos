@@ -55,7 +55,7 @@ class CurrentPlayListFragment : Fragment() {
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
             ): Boolean {
-                adapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition);
+                adapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
                 return true
             }
 

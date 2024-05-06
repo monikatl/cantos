@@ -57,9 +57,13 @@ class NotificationsFragment : Fragment() {
                 viewModel.choseSortCondition(order)
             }
         }
-
         return binding.root
     }
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setHasOptionsMenu(true)
+  }
 
     private val resolveCantoContent: (Long) -> Unit = {playListId ->
         viewModel.setChosenPlayListId(playListId)
@@ -110,4 +114,37 @@ class NotificationsFragment : Fragment() {
         findNavController().navigate(R.id.currentPlayListFragment)
         dialog.dismiss()
     }
+
+  override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    inflater.inflate(R.menu.queue_menu, menu)
+    super.onCreateOptionsMenu(menu, inflater)
+    menu.getItem(0).setOnMenuItemClickListener {
+      if(viewModel.isQueueDisabled()){
+        showQueueActivateDialog()
+      } else {
+        showQueueList()
+      }
+    }
+  }
+
+  private fun showQueueList(): Boolean {
+    return true
+  }
+
+  private fun showQueueActivateDialog(): Boolean {
+    val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+    builder
+      .setMessage("W trybie KOLEJKA ZESTAWÓW możesz dodawać do listy wiele zestawów i nawigować między nimi w PlayList.")
+      .setTitle("Czy chcesz aktywować tryb KOLEJKA ZESTAWÓW?")
+      .setPositiveButton("TAK") { _, _ ->
+        viewModel.activateQueueSet()
+      }
+      .setNegativeButton("NIE") { dialog, _ ->
+        dialog.dismiss()
+      }
+
+    val dialog: AlertDialog = builder.create()
+    dialog.show()
+    return true
+  }
 }

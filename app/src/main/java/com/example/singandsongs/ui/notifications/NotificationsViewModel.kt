@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import com.example.singandsongs.data.PlayListRepository
+import com.example.singandsongs.data.PreferencesManager
 import com.example.singandsongs.model.PlayList
 import com.example.singandsongs.model.PlayListWithCantos
 import com.example.singandsongs.utils.SortCondition
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotificationsViewModel @Inject constructor(
-    private val playListRepository: PlayListRepository
+    private val playListRepository: PlayListRepository,
+    private val preferences: PreferencesManager
 ) : ViewModel() {
 
     private val _id = MutableLiveData<Long>().apply {
@@ -22,6 +24,7 @@ class NotificationsViewModel @Inject constructor(
     }
     val id: LiveData<Long> = _id
 
+    val isQueueActive: LiveData<Boolean> = preferences.enableQueueFlow.asLiveData()
 
     private val _sortCondition = MutableLiveData<SortCondition>().apply {
         value = SortCondition.AZ
@@ -70,5 +73,14 @@ class NotificationsViewModel @Inject constructor(
 
     fun setChosenPlayListId(id: Long){
         _id.value = id
+    }
+    fun activateQueueSet() {
+        viewModelScope.launch {
+          preferences.setEnableQueue(true)
+        }
+    }
+
+    fun isQueueDisabled(): Boolean {
+      return isQueueActive.value == false
     }
 }
