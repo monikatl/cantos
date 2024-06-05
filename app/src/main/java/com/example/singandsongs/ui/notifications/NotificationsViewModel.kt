@@ -24,7 +24,9 @@ class NotificationsViewModel @Inject constructor(
     }
     val id: LiveData<Long> = _id
 
-    val isQueueActive: LiveData<Boolean> = preferences.enableQueueFlow.asLiveData()
+    private var _isQueueActive = preferences.enableQueueFlow.asLiveData() as MutableLiveData<Boolean>
+
+    val isQueueActive: LiveData<Boolean> = _isQueueActive
 
     private val _sortCondition = MutableLiveData<SortCondition>().apply {
         value = SortCondition.AZ
@@ -35,8 +37,6 @@ class NotificationsViewModel @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     var playLists: LiveData<List<PlayList>> = sortCondition.switchMap { playListRepository.getAllPlayLists(it).asLiveData() }
     var playListWithCantos: LiveData<PlayListWithCantos> = id.switchMap {  playListRepository.getPlayListWithCantosById(it).asLiveData() }
-
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     val addNewPlayList: (LocalDate, String, Boolean) -> Unit = { date, name, isDefault ->
@@ -81,6 +81,13 @@ class NotificationsViewModel @Inject constructor(
     }
 
     fun isQueueDisabled(): Boolean {
+      println(isQueueActive.value.toString())
       return isQueueActive.value == false
     }
+
+  fun disableQueue() {
+    viewModelScope.launch {
+      preferences.setEnableQueue(false)
+    }
+  }
 }

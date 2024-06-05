@@ -118,7 +118,7 @@
             android:layout_marginBottom="120dp"
             android:background="@color/white"
             android:src="@drawable/right_arrow_next_svgrepo_com"
-            android:visibility="@{viewModel.isQueueMode ? View.VISIBLE : View.GONE}"
+            android:visibility="@{viewModel.isQueueActive ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -130,7 +130,7 @@
             android:layout_marginBottom="120dp"
             android:background="@color/white"
             android:src="@drawable/previous_back_svgrepo_com"
-            android:visibility="@{viewModel.isQueueMode ? View.VISIBLE : View.GONE}"
+            android:visibility="@{viewModel.isQueueActive ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

@@ -20,7 +20,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DataStoreModule {
 
-  @Singleton
   @Provides
   fun provideDataStore(@ApplicationContext context: Context) : DataStore<Preferences> {
     return PreferenceDataStoreFactory.create(
@@ -33,9 +32,8 @@ object DataStoreModule {
 
   @Provides
   fun providePreferencesManager(
-    @ApplicationContext context: Context,
     dataStore: DataStore<Preferences>
   ): PreferencesManager {
-    return PreferencesManager(context, dataStore)
+    return PreferencesManager(dataStore)
   }
 }

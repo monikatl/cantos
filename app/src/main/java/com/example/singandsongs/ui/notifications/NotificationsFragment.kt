@@ -5,7 +5,10 @@ import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
 import android.view.*
+import android.widget.Button
 import android.widget.Toast
+import androidx.activity.BackEventCompat
+import androidx.activity.OnBackPressedCallback
 import com.example.singandsongs.utils.SortCondition.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -13,6 +16,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.singandsongs.R
 import com.example.singandsongs.databinding.FragmentNotificationsBinding
+import com.google.android.material.sidesheet.SideSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class NotificationsFragment : Fragment() {
@@ -57,6 +61,9 @@ class NotificationsFragment : Fragment() {
                 viewModel.choseSortCondition(order)
             }
         }
+
+
+
         return binding.root
     }
 
@@ -128,6 +135,16 @@ class NotificationsFragment : Fragment() {
   }
 
   private fun showQueueList(): Boolean {
+    val sideSheetDialog = SideSheetDialog(requireContext())
+    sideSheetDialog.setContentView(R.layout.queue_side_sheet)
+    sideSheetDialog.setSheetEdge(Gravity.END)
+    sideSheetDialog.show()
+
+    val disableQueueButton = sideSheetDialog.findViewById<Button>(R.id.disableQueue)
+    disableQueueButton?.setOnClickListener {
+      viewModel.disableQueue()
+      sideSheetDialog.dismiss()
+    }
     return true
   }
 

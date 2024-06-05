@@ -1,9 +1,11 @@
 package com.example.singandsongs.ui.current_playlist
 
 import android.content.DialogInterface
+import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.*
 import com.example.singandsongs.data.CantoRepository
 import com.example.singandsongs.data.PlayListRepository
+import com.example.singandsongs.data.PreferencesManager
 import com.example.singandsongs.model.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -13,7 +15,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CurrentPlayListViewModel @Inject constructor(
     private val playListRepository: PlayListRepository,
-    private val cantoRepository: CantoRepository
+    private val cantoRepository: CantoRepository,
+    private val preferences: PreferencesManager
 ): ViewModel() {
 
     private val _id = MutableLiveData<Long>().apply {
@@ -27,7 +30,15 @@ class CurrentPlayListViewModel @Inject constructor(
     val cantoContent: LiveData<CantoAndContent> = id.switchMap { cantoRepository.getCantoAndContent(it).asLiveData()  }
     val cantosAndContents: LiveData<List<CantoAndContent>> = cantoRepository.getCantosAndContents().asLiveData()
 
-    val isQueueMode: Boolean = true
+    private var _isQueueActive = MutableLiveData<Boolean>().apply {
+      value = false
+    }
+
+    val isQueueActive: LiveData<Boolean> = _isQueueActive
+
+    init {
+      _isQueueActive = preferences.enableQueueFlow.asLiveData() as MutableLiveData<Boolean>
+    }
 
     fun deletePlayList(dialog: DialogInterface?) {
         playList.value?.let {
