@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class Canto(
     var number: Int?,
     var name: String,
-    var kind: Kind?,
+    var kind: Kind? = Kind.ACCIDENTAL,
     @ColumnInfo(name = "is_favourite")
     var isFavourite: Boolean = false,
     @ColumnInfo(name = "is_draft")

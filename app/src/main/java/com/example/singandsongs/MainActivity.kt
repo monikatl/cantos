@@ -29,11 +29,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if(!databaseExists()) {
+       // if(!databaseExists()) {
             CoroutineScope(Dispatchers.IO).launch {
-                databaseInitializer.initialize()
+                databaseInitializer.initialize(applicationContext)
             }
-        }
+      //  }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
