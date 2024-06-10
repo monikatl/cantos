@@ -9,6 +9,9 @@ data class Canto(
     var number: Int?,
     var name: String,
     var kind: Kind? = Kind.ACCIDENTAL,
+    var sheetCounter: Int? = 0,
+    var sheets: String = "",
+    var fileName: String = "",
     @ColumnInfo(name = "is_favourite")
     var isFavourite: Boolean = false,
     @ColumnInfo(name = "is_draft")
