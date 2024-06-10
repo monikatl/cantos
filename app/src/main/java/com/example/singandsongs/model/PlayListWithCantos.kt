@@ -17,7 +17,7 @@ data class PlayListWithCantos (
     fun convertToSend(): String {
         val listToSend = StringBuilder()
         listToSend.append(playList.name, "\n")
-        cantos.forEach { listToSend.append(it.number, " ", it.name, "\n") }
+        cantos.forEach { listToSend.append(it.number, " ", it.name, " ", it.currentSheetCount, "\n") }
         return listToSend.toString()
     }
 }

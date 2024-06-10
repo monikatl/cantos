@@ -1,5 +1,6 @@
 package com.example.singandsongs.ui.home
 
+import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -16,7 +17,7 @@ import com.example.singandsongs.utils.*
 class CantoAdapter(private val context: Context,
                    private val deleteAction: ((Int) -> Unit)? = null,
                    private val editAction: ((Canto) -> Unit)? = null,
-                   private val onClickItemCanto: ((Long) -> Unit)? = null,
+                   private val onClickItemCanto: ((Long, Int) -> Unit)? = null,
                    private val onClickItemDraft: ((Canto) -> Unit)? = null,
                    private val checkFav: ((Canto) -> Unit)? = null,
                    private val onPlayListClickItem: ((Long) -> Unit)? = null
@@ -71,7 +72,7 @@ class CantoAdapter(private val context: Context,
         holder.bind(canto)
 
         holder.itemView.setOnClickListener {
-            if(!canto.isDraft) onClickItemCanto?.invoke(canto.cantoId)
+            if(!canto.isDraft)  showSheetNumberDialog(canto.cantoId, canto.sheetCounter ?: 0)
             if(canto.isDraft) onClickItemDraft?.invoke(canto)
             onPlayListClickItem?.invoke(canto.cantoId)
         }
@@ -106,6 +107,21 @@ class CantoAdapter(private val context: Context,
             }
         }
     }
+
+  private fun showSheetNumberDialog(cantoId: Long, sheetCounter: Int) {
+    val items =  (1..sheetCounter).map { it.toString() }.toTypedArray()
+    AlertDialog.Builder(context)
+      .setTitle("Wybierz liczbę kart:")
+      .setNegativeButton("Anuluj") { dialog, _ ->
+        dialog.dismiss()
+      }
+      .setItems(items) { dialog, which ->
+        onClickItemCanto?.invoke(cantoId, (which + 1))
+        dialog.dismiss()
+      }.create()
+        .show()
+
+  }
 
 
     override fun getItemCount(): Int {

@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.example.singandsongs.data.CantoRepository
 import com.example.singandsongs.data.PlayListRepository
 import com.example.singandsongs.model.*
+import com.example.singandsongs.utils.FilterCondition
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -26,6 +27,7 @@ class CurrentPlayListViewModel @Inject constructor(
     val playListWithCantos: LiveData<PlayListWithCantos> = playListRepository.getPlayListWithCantos.asLiveData()
     val cantoContent: LiveData<CantoAndContent> = id.switchMap { cantoRepository.getCantoAndContent(it).asLiveData()  }
     val cantosAndContents: LiveData<List<CantoAndContent>> = cantoRepository.getCantosAndContents().asLiveData()
+    var cantos: LiveData<List<Canto>> = cantoRepository.getAllCantos(FilterCondition.CANTOS).asLiveData()
 
     val isQueueMode: Boolean = true
 
@@ -48,6 +50,18 @@ class CurrentPlayListViewModel @Inject constructor(
     fun setCurrentCanto(id: Long) {
         _id.value = id
     }
+
+    fun resolveAction(id: Long, currentCounter: Int) {
+      val canto = cantos.value?.find { it.cantoId == id }
+      canto?.let {
+        it.currentSheetCount = currentCounter
+        viewModelScope.launch {
+          cantoRepository.updateCanto(it)
+        }
+      }
+      setCurrentCanto(id)
+    }
+
 
     fun addContentToCanto(cantoAndContent: CantoAndContent) {
         viewModelScope.launch {

@@ -38,7 +38,7 @@ class CurrentPlayListFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        val adapter = CantoAdapter(requireContext(), onPlayListClickItem = resolveCantoContent)
+        val adapter = CantoAdapter(requireContext(), onClickItemCanto = resolveCantoContent)
         binding.cantosRecyclerView.adapter = adapter
 
 
@@ -113,8 +113,8 @@ class CurrentPlayListFragment : Fragment() {
             .show()
     }
 
-    private val resolveCantoContent: (Long) -> Unit = {cantoId ->
-        viewModel.setCurrentCanto(cantoId)
+    private val resolveCantoContent: (Long, Int) -> Unit = {cantoId, currentCounter->
+        viewModel.resolveAction(cantoId, currentCounter)
     }
 
     private fun resolveCantoContentAction(cantoAndContent: CantoAndContent) {

@@ -19,7 +19,9 @@ data class Canto(
     @PrimaryKey(autoGenerate = true)
     val cantoId: Long = 0
     ) {
-    fun checkAsFavourite() {
+  var currentSheetCount: Int? = sheetCounter
+
+  fun checkAsFavourite() {
         isFavourite = !isFavourite
     }
 

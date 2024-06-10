@@ -1,5 +1,6 @@
 package com.example.singandsongs.ui.home
 
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.*
 import com.example.singandsongs.data.CantoRepository
 import com.example.singandsongs.data.PlayListRepository
@@ -77,14 +78,20 @@ class HomeViewModel @Inject constructor(
         _filterCondition.value = filterCondition
     }
 
-    val addCantoToCurrentPlayList: (Long) -> Unit = { cantoId ->
+    val addCantoToCurrentPlayList: (Long, Int) -> Unit = { cantoId, currentCounter ->
         val playListId = playListWithCantos.value?.playList?.playListId
         playListId?.let {
             viewModelScope.launch(Dispatchers.IO) {
                 playListRepository.insertCantoPlayListCrossRef(CantoPlayListCrossRef(cantoId, it))
+                val canto = cantos.value?.find { it.cantoId == cantoId }
+                canto?.let {
+                  it.currentSheetCount = currentCounter
+                  cantoRepository.updateCanto(it)
+                }
             }
         }
     }
+
 
     fun transformDraft(canto: Canto){
         canto.transformDraft()
