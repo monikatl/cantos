@@ -1,8 +1,11 @@
 package com.example.singandsongs.data
 
 import android.content.Context
+import android.widget.Toast
+import com.example.benedictus.src.main.java.Benedictus
 import com.example.singandsongs.model.Canto
 import com.example.singandsongs.model.Kind
+import kotlinx.coroutines.joinAll
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.lang.NumberFormatException
@@ -11,24 +14,33 @@ import javax.inject.Inject
 
 class DatabaseInit @Inject constructor(private val cantoDao: CantoDao) {
 
-    val cantos: MutableList<Canto> = mutableListOf()
+    var cantos: MutableList<Canto> = mutableListOf()
+    fun initialize() {
+//      val cantos = Benedictus.readTexts()
+//      //Toast.makeText(context, cantos[0].formattedText, Toast.LENGTH_SHORT).show()
+//      this.cantos = cantos.map { convertToCanto(it) }
+//
+//      for (canto in this.cantos) {
+//        cantoDao.insertCanto(canto)
+//      }
+    }
+
     fun initialize(context: Context) {
       readFromTXTFile(context)
-      for (canto in cantos) {
+      for (canto in this.cantos) {
         cantoDao.insertCanto(canto)
       }
     }
 
     private fun readFromTXTFile(context: Context) {
-      val fileName = "/assets/cantos.txt"
-      val text = readFromAssets(context, fileName)
+      val text = readFromAssets(context)
       text.forEach { stringCanto ->
         val canto = convertToCanto(stringCanto)
         cantos.add(canto)
       }
     }
 
-  private fun readFromAssets(context: Context, fileName: String): List<String> {
+  private fun readFromAssets(context: Context): List<String> {
     val lines = mutableListOf<String>()
     try {
       context.assets.open("cantos.txt").use { inputStream ->
@@ -62,6 +74,12 @@ class DatabaseInit @Inject constructor(private val cantoDao: CantoDao) {
     val sheetsCounter = textCanto.substring(index+1).split('$')[1].toInt()
     return Canto(number, title, Kind.ACCIDENTAL, sheetsCounter)
   }
+
+  private fun convertToCanto(canto: com.example.benedictus.src.main.java.Canto): Canto {
+    val sheets = canto.sheets.toString()
+    return Canto(canto.number, canto.cantoName, Kind.ACCIDENTAL, canto.sheetCounter, sheets, canto.fileName)
+  }
+
 }
 
 

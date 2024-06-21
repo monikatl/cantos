@@ -63,20 +63,31 @@
                 android:textAllCaps="true"
                 android:textStyle="bold"
                 android:textSize="26sp"
-                app:layout_constraintEnd_toStartOf="@+id/sharePlayList"
+                app:layout_constraintEnd_toStartOf="@+id/sendToSD"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/sharePlayList"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:backgroundTint="@color/white"
-                android:src="@drawable/share_svgrepo_com"
-                app:layout_constraintBottom_toBottomOf="@+id/textView2"
-                app:layout_constraintEnd_toStartOf="@+id/deletePlayList"
-                app:layout_constraintTop_toTopOf="@+id/textView2" />
+          <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/sendToSD"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/sd_card_free_material_1_svgrepo_com"
+            app:layout_constraintBottom_toBottomOf="@+id/textView2"
+            app:layout_constraintEnd_toStartOf="@+id/sharePlayList"
+            app:layout_constraintTop_toTopOf="@+id/textView2" />
+
+
+          <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/sharePlayList"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/share_svgrepo_com"
+            app:layout_constraintBottom_toBottomOf="@+id/textView2"
+            app:layout_constraintEnd_toStartOf="@+id/deletePlayList"
+            app:layout_constraintTop_toTopOf="@+id/textView2" />
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/deletePlayList"

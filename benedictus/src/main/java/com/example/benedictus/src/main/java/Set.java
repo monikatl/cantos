@@ -1,8 +1,12 @@
 package com.example.benedictus.src.main.java;
 
+import android.content.Context;
+import android.util.Log;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -35,11 +39,15 @@ public class Set implements Piece{
   *
   * */
 
-  public void exportToTXT() {
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+  private static final String TAG = "FileHelper";
+
+  public void exportToTXT(Context context) {
+    try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+      context.openFileOutput(fileName, Context.MODE_PRIVATE)))) {
       writer.write(formattedString());
-      System.out.println("File created and content written successfully.");
+      Log.d(TAG, "File created and content written successfully.");
     } catch (IOException e) {
+      Log.e(TAG, "Error while writing to file: " + e.getMessage());
       e.printStackTrace();
     }
   }

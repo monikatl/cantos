@@ -1,7 +1,9 @@
 package com.example.singandsongs.ui.current_playlist
 
+import android.content.Context
 import android.content.DialogInterface
 import androidx.lifecycle.*
+import com.example.benedictus.src.main.java.Set
 import com.example.singandsongs.data.CantoRepository
 import com.example.singandsongs.data.PlayListRepository
 import com.example.singandsongs.model.*
@@ -21,6 +23,11 @@ class CurrentPlayListViewModel @Inject constructor(
         value = 0
     }
     val id: LiveData<Long> = _id
+
+    private val _cardIsActive = MutableLiveData<Boolean>().apply {
+      value = false
+    }
+    var cardIsActive: LiveData<Boolean> = _cardIsActive
 
     val playList: LiveData<PlayList> = playListRepository.getCurrentPlayList.asLiveData()
     val playListAttached: LiveData<Boolean> = playListRepository.isAttached.asLiveData()
@@ -70,5 +77,22 @@ class CurrentPlayListViewModel @Inject constructor(
                 cantoRepository.updateContent(Content(cantoAndContent.canto.cantoId, "ttttt"))
             }
         }
+    }
+
+    fun isActive() {
+      _cardIsActive.value = true
+    }
+    fun isInactive() {
+      _cardIsActive.value = false
+    }
+
+    fun sendSetToSD(context: Context) {
+      val playList = playList.value
+      val mapCantos = playListWithCantos.value?.cantos?.associate { it.number to it.currentSheetCount }
+      playList?.let {
+        val set = Set("999" + ".txt", playList.name, mapCantos)
+        set.exportToTXT(context)
+      }
+
     }
 }

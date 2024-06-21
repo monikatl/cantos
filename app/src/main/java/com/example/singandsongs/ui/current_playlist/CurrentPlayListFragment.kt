@@ -78,6 +78,16 @@ class CurrentPlayListFragment : Fragment() {
 
         binding.attachPlayList.setOnClickListener { showPlayListsDialog() }
 
+        binding.sendToSD.setOnClickListener {
+          context?.let {
+            viewModel.sendSetToSD(it)
+          }
+        }
+
+        viewModel.cardIsActive.observe(viewLifecycleOwner) {
+          println(viewModel.cardIsActive.value)
+        }
+
         return binding.root
     }
 
