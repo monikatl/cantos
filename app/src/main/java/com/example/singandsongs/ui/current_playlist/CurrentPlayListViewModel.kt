@@ -90,8 +90,9 @@ class CurrentPlayListViewModel @Inject constructor(
       val playList = playList.value
       val mapCantos = playListWithCantos.value?.cantos?.associate { it.number to it.currentSheetCount }
       playList?.let {
-        val set = Set("999" + ".txt", playList.name, mapCantos)
-        set.exportToTXT(context)
+        val set = Set(Set.getNextSetFileName() + ".txt", playList.name, mapCantos)
+        println(set.formattedString())
+        set.saveFileToExternalPath(context)
       }
 
     }

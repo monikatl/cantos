@@ -4,12 +4,10 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -17,16 +15,15 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.singandsongs.data.DatabaseInit
 import com.example.singandsongs.databinding.ActivityMainBinding
+import com.example.singandsongs.ui.current_playlist.CurrentPlayListViewModel
+import com.example.singandsongs.workmanager.scheduleDailyWork
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
-import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
-import com.example.singandsongs.ui.current_playlist.CurrentPlayListViewModel
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -64,8 +61,19 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
+      val targetFragment = intent.getStringExtra("TARGET_FRAGMENT")
+
+      if (savedInstanceState == null) {
+        when (targetFragment) {
+          "NotificationsFragment" -> navigateToFragmentX()
+          else -> navigateToDefaultFragment()
+        }
+      }
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+      scheduleDailyWork(this)
 
         sdCardReceiver = object : BroadcastReceiver() {
           override fun onReceive(context: Context, intent: Intent) {
@@ -103,4 +111,11 @@ class MainActivity : AppCompatActivity() {
         return findNavController(R.id.nav_host_fragment_activity_main).navigateUp(appBarConfiguration)
     }
 
+    private fun navigateToFragmentX() {
+      findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_notifications)
+    }
+
+    private fun navigateToDefaultFragment() {
+      findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.currentPlayListFragment)
+    }
  }
