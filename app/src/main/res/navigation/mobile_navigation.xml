@@ -44,4 +44,11 @@
         android:label="fragment_category"
         tools:layout="@layout/fragment_category" />
 
+    <fragment
+        android:id="@+id/calendar_fragment"
+        android:name="com.example.singandsongs.ui.calendar.CalendarFragment"
+        android:label="fragment_calendar"
+        tools:layout="@layout/fragment_calendar" />
+
+
 </navigation>
