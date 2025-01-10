@@ -138,7 +138,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun showAddDraftDialog(name: String) {
-        val newFragment = AddCantoDialogFragment(action = homeViewModel.addDraft, draftName = name)
+        val newFragment = AddCantoDialogFragment(onAction = homeViewModel.addDraft, draftName = name)
         newFragment.show(activity?.supportFragmentManager!!, "add_draft")
     }
 
