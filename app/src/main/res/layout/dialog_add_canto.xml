@@ -89,6 +89,35 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
+      <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/pageCounter"
+          style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:layout_marginLeft="8dp"
+          android:layout_marginRight="8dp"
+          android:layout_marginBottom="8dp"
+          android:fontFamily="sans-serif"
+          android:hint="liczba stron"
+          android:layout_weight="10">
+
+          <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputPageCounter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+      </androidx.appcompat.widget.LinearLayoutCompat>
+
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/cantoContent"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"

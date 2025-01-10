@@ -19,7 +19,7 @@ import com.example.singandsongs.model.Kind
 import java.net.URLEncoder
 
 class AddCantoDialogFragment(
-  private val onAction: (Int, String, Kind, String, Canto?) -> Unit,
+  private val onAction: (Int, String, Kind, Int, String, Canto?) -> Unit,
   private val canto: Canto? = null,
   private val draftName: String? = null
 ) : DialogFragment() {
@@ -30,6 +30,7 @@ class AddCantoDialogFragment(
   private var number: Int = 315
   private var kind: Kind = Kind.ACCIDENTAL
   private var text: String? = null
+  private var pageCounter: Int = 1
 
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
     binding = DataBindingUtil.inflate(
@@ -89,6 +90,7 @@ class AddCantoDialogFragment(
     binding.name.editText?.setText(canto?.name.orEmpty())
     binding.number.editText?.setText(canto?.number?.toString().orEmpty())
     binding.kindText.setText(canto?.kind?.text.orEmpty(), false)
+    binding.pageCounter
   }
 
   private fun setupDraftProperties() {
@@ -101,8 +103,9 @@ class AddCantoDialogFragment(
     number = binding.number.editText?.text.toString().toIntOrNull() ?: 0
     kind = Kind.entries.find { it.text == binding.kindText.text.toString() } ?: Kind.ACCIDENTAL
     text = binding.cantoContentInput.text.toString().trim()
+    pageCounter = binding.pageCounter.editText?.text.toString().toIntOrNull() ?: 0
 
-    onAction(number, name, kind, text.orEmpty(), canto)
+    onAction(number, name, kind, pageCounter, text.orEmpty(), canto)
   }
 
   private fun search(query: String) {

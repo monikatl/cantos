@@ -148,7 +148,7 @@ class HomeFragment : Fragment() {
         newFragment.show(activity?.supportFragmentManager!!,  tag)
     }
 
-    private fun resolveDraftOrCantoDialog(): Pair<(Int, String, Kind, String, Canto?) -> Unit, String> {
+    private fun resolveDraftOrCantoDialog(): Pair<(Int, String, Kind, Int, String, Canto?) -> Unit, String> {
       var action = homeViewModel.addCanto
       var tag = "add_canto"
       if(currentTab == FilterCondition.DRAFTS) {

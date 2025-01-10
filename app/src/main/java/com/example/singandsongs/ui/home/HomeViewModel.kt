@@ -33,8 +33,8 @@ class HomeViewModel @Inject constructor(
     val playListWithCantos: LiveData<PlayListWithCantos> = playListRepository.getPlayListWithCantos.asLiveData()
 
 
-    val addCanto: (Int, String, Kind, String, Canto?) -> Unit = { number, name, kind, text, _ ->
-        val canto = Canto(number, name, kind)
+    val addCanto: (Int, String, Kind, Int, String, Canto?) -> Unit = { number, name, kind, pageCounter, text, _ ->
+        val canto = Canto(number, name, kind, pageCounter)
         viewModelScope.launch(Dispatchers.IO) {
             val cantoId = cantoRepository.insertCanto(canto)
             val content = Content(cantoId, text)
@@ -42,8 +42,8 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    val addDraft:  (Int, String, Kind, String, Canto?) -> Unit = { number, name, kind, text, _ ->
-        val canto = Canto.createDraftCanto(name,number, kind)
+    val addDraft:  (Int, String, Kind, Int, String, Canto?) -> Unit = { number, name, kind, pageCounter, text, _ ->
+        val canto = Canto.createDraftCanto(name,number, kind, pageCounter)
         viewModelScope.launch(Dispatchers.IO) {
             val cantoId = cantoRepository.insertCanto(canto)
             val content = Content(cantoId, text)
@@ -51,11 +51,12 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    val editCanto: (Int, String, Kind, String, Canto?) -> Unit = { number, name, kind, text, canto ->
+    val editCanto: (Int, String, Kind, Int, String, Canto?) -> Unit = { number, name, kind, pageCounter, text, canto ->
         canto?.let{
             it.number = number
             it.name = name
             it.kind = kind
+            it.sheetCounter = pageCounter
             val content = contents.value?.first { c ->  c.cantoId == it.cantoId   }
             content?.text = text
             viewModelScope.launch {

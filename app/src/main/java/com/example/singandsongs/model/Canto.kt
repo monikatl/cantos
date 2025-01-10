@@ -30,8 +30,8 @@ data class Canto(
     }
 
     companion object {
-        fun createDraftCanto(name: String, number: Int? = null, kind: Kind? = null): Canto {
-            return Canto(number, name, kind, isDraft = true)
+        fun createDraftCanto(name: String, number: Int? = null, kind: Kind? = null, pageCounter: Int? = null): Canto {
+            return Canto(number, name, kind, pageCounter, isDraft = true)
         }
 
     }
