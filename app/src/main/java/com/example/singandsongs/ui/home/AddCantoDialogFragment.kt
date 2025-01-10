@@ -8,125 +8,113 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.singandsongs.R
 import com.example.singandsongs.databinding.DialogAddCantoBinding
 import com.example.singandsongs.model.Canto
 import com.example.singandsongs.model.Kind
-import com.google.android.material.textfield.TextInputLayout
 import java.net.URLEncoder
 
+class AddCantoDialogFragment(
+  private val onAction: (Int, String, Kind, String, Canto?) -> Unit,
+  private val canto: Canto? = null,
+  private val draftName: String? = null
+) : DialogFragment() {
 
-class AddCantoDialogFragment(private val action: (Int, String, Kind, String, Canto?) -> Unit,
-                             val canto: Canto? = null,
-                             val draftName: String? = null)  : DialogFragment() {
+  private lateinit var binding: DialogAddCantoBinding
 
-    var name: String = "Nowa pieśń"
-    var number: Int = 315
-    var kind: Kind = Kind.ACCIDENTAL
-    var text: String? = null
+  private var name: String = "Nowa pieśń"
+  private var number: Int = 315
+  private var kind: Kind = Kind.ACCIDENTAL
+  private var text: String? = null
 
-    private lateinit var binding: DialogAddCantoBinding
+  override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    binding = DataBindingUtil.inflate(
+      LayoutInflater.from(requireContext()),
+      R.layout.dialog_add_canto,
+      null,
+      false
+    )
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = activity?.let {
-            binding = DataBindingUtil.inflate(LayoutInflater.from(requireContext()), R.layout.dialog_add_canto, null, false);
-            val builder = AlertDialog.Builder(it)
-            builder.setView(binding.root)
-                .setPositiveButton(if(canto == null)"dodaj" else "zapisz"){ _, _ -> clickPositiveButton() }
-                .setNegativeButton("Anuluj") { dialog, _ -> dialog.dismiss() }
-            builder.create()
+    return AlertDialog.Builder(requireContext())
+      .setView(binding.root)
+      .setPositiveButton(if (canto == null) "Dodaj" else "Zapisz") { _, _ -> handlePositiveClick() }
+      .setNegativeButton("Anuluj") { dialog, _ -> dialog.dismiss() }
+      .create()
+      .apply {
+        setOnShowListener { initializeDialog() }
+      }
+  }
 
-        } ?: throw IllegalStateException("Activity cannot be null")
-        dialog.setOnShowListener {
-            if(this.tag == "add_draft") setDraftImageAndName()
-            if(canto != null) bindProperties()
-            setKindList()
-        }
-        return dialog
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View {
+    setupClickListeners()
+    return binding.root
+  }
+
+  private fun initializeDialog() {
+    if (tag == "add_draft") setupDraftProperties()
+    canto?.let { bindCantoProperties() }
+    setupKindDropdown()
+  }
+
+  private fun setupClickListeners() {
+    binding.addContentInput.setOnClickListener { showContentInput() }
+    binding.searchButton.setOnClickListener { search(binding.inputName.text.toString()) }
+  }
+
+  private fun setupKindDropdown() {
+    val kindNames = Kind.entries.map { it.text }
+    val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, kindNames)
+    binding.kindText.setAdapter(adapter)
+
+    binding.kindText.setOnItemClickListener { _, _, position, _ ->
+      kind = Kind.entries[position]
     }
+  }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding.addContentInput.setOnClickListener { addCantoContentInput() }
-        binding.searchButton.setOnClickListener {
-            search(getCantoName())
-        }
-        return binding.root
+  private fun showContentInput() {
+    binding.addContentInput.visibility = View.GONE
+    binding.cantoContent.visibility = View.VISIBLE
+    text = ""
+  }
+
+  private fun bindCantoProperties() {
+    binding.name.editText?.setText(canto?.name.orEmpty())
+    binding.number.editText?.setText(canto?.number?.toString().orEmpty())
+    binding.kindText.setText(canto?.kind?.text.orEmpty(), false)
+  }
+
+  private fun setupDraftProperties() {
+    binding.dialogImage.setImageResource(R.drawable.rule_draft_svgrepo_com)
+    binding.name.editText?.setText(draftName.orEmpty())
+  }
+
+  private fun handlePositiveClick() {
+    name = binding.name.editText?.text.toString().trim()
+    number = binding.number.editText?.text.toString().toIntOrNull() ?: 0
+    kind = Kind.entries.find { it.text == binding.kindText.text.toString() } ?: Kind.ACCIDENTAL
+    text = binding.cantoContentInput.text.toString().trim()
+
+    onAction(number, name, kind, text.orEmpty(), canto)
+  }
+
+  private fun search(query: String) {
+    val searchUri = Uri.parse("https://www.google.com/search?q=${URLEncoder.encode(query, "UTF-8")}")
+    val searchIntent = Intent(Intent.ACTION_VIEW, searchUri).apply {
+      addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     }
-
-    private fun addCantoContentInput() {
-        dialog?.let{
-            binding.addContentInput.visibility = View.GONE
-            text = ""
-            val cantoContent: TextInputLayout = it.findViewById(R.id.cantoContent)
-            cantoContent.visibility = View.VISIBLE
-        }
-
+    try {
+      requireActivity().startActivity(searchIntent)
+    } catch (e: Exception) {
+      e.printStackTrace()
+      Toast.makeText(requireContext(), "Brak aplikacji do wyszukiwania", Toast.LENGTH_SHORT).show()
     }
-
-    private fun bindProperties() {
-        dialog?.let{
-            binding.name.editText?.setText(canto?.name)
-            binding.number.editText?.setText(canto?.number.toString())
-            binding.kindText.setText(canto?.kind?.text)
-        }
-    }
-
-    private fun setDraftImageAndName() {
-        dialog?.let{
-            binding.dialogImage.setImageResource(R.drawable.rule_draft_svgrepo_com)
-            binding.name.editText?.setText(draftName)
-        }
-    }
-
-    private fun clickPositiveButton() {
-        dialog?.let{
-            name = binding.name.editText?.text.toString()
-            number = try {
-                binding.number.editText?.text.toString().toInt()
-            } catch (e: java.lang.NumberFormatException) {
-                0
-            }
-            kind = Kind.values().find {  it.text == binding.kindText.text.toString() } ?: Kind.ACCIDENTAL
-            text = binding.cantoContentInput.text.toString()
-            action.invoke(number, name, kind, text ?: "", canto)
-        }
-    }
-
-    private fun setKindList() {
-        val items = Kind.values().map { it.text }
-        items.forEach { println(it) }
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, items)
-        dialog?.let{
-            val kindEdit: AutoCompleteTextView = it.findViewById(R.id.kindText)
-            kindEdit.setAdapter(adapter)
-             kindEdit.setOnClickListener {
-                 AdapterView.OnItemClickListener { _, _, position, _ ->
-                     kind = Kind.values()[position]
-                 }
-             }
-        }
-    }
-
-    private fun getCantoName(): String {
-        return binding.inputName.text.toString()
-    }
-
-    private fun search(query: String) {
-        val searchUri = Uri.parse("https://www.google.com/search?q=${URLEncoder.encode(query, "UTF-8")}")
-        val searchIntent = Intent(Intent.ACTION_VIEW, searchUri)
-        searchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        try {
-            requireActivity().startActivity(searchIntent)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-    }
+  }
 }
