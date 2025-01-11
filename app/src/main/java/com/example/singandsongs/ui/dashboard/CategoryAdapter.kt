@@ -2,7 +2,7 @@ package com.example.singandsongs.ui.dashboard
 
 import android.graphics.Color
 import com.example.singandsongs.databinding.CategoryItemBinding
-import com.example.singandsongs.model.Kind
+import com.example.singandsongs.model.playlist.Kind
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView

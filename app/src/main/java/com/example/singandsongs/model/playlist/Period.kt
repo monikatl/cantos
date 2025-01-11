@@ -1,4 +1,4 @@
-package com.example.singandsongs.model
+package com.example.singandsongs.model.playlist
 
 enum class Period {
     ADVENT,

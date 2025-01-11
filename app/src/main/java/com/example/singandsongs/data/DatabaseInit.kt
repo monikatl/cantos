@@ -1,15 +1,11 @@
 package com.example.singandsongs.data
 
 import android.content.Context
-import android.widget.Toast
-import com.example.benedictus.src.main.java.Benedictus
-import com.example.singandsongs.model.Canto
-import com.example.singandsongs.model.Kind
-import kotlinx.coroutines.joinAll
+import com.example.singandsongs.data.canto.CantoDao
+import com.example.singandsongs.model.playlist.Canto
+import com.example.singandsongs.model.playlist.Kind
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import java.lang.NumberFormatException
-import java.util.stream.Collectors
 import javax.inject.Inject
 
 class DatabaseInit @Inject constructor(private val cantoDao: CantoDao) {

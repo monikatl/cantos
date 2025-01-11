@@ -4,19 +4,23 @@ import android.content.Context
 import android.content.DialogInterface
 import androidx.lifecycle.*
 import com.example.benedictus.src.main.java.Set
-import com.example.singandsongs.data.CantoRepository
-import com.example.singandsongs.data.PlayListRepository
-import com.example.singandsongs.model.*
+import com.example.singandsongs.data.canto.CantoRepository
+import com.example.singandsongs.data.playlist.PlayListRepository
+import com.example.singandsongs.model.playlist.Canto
+import com.example.singandsongs.model.playlist.CantoAndContent
+import com.example.singandsongs.model.playlist.CantoPlayListCrossRef
+import com.example.singandsongs.model.playlist.Content
+import com.example.singandsongs.model.playlist.PlayList
+import com.example.singandsongs.model.playlist.PlayListWithCantos
 import com.example.singandsongs.utils.FilterCondition
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CurrentPlayListViewModel @Inject constructor(
-    private val playListRepository: PlayListRepository,
-    private val cantoRepository: CantoRepository
+  private val playListRepository: PlayListRepository,
+  private val cantoRepository: CantoRepository
 ): ViewModel() {
 
     private val _id = MutableLiveData<Long>().apply {

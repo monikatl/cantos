@@ -10,8 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.singandsongs.R
 import com.example.singandsongs.databinding.FragmentHomeBinding
-import com.example.singandsongs.model.Canto
-import com.example.singandsongs.model.Kind
+import com.example.singandsongs.model.playlist.Canto
+import com.example.singandsongs.model.playlist.Kind
 import com.example.singandsongs.utils.FilterCondition
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout

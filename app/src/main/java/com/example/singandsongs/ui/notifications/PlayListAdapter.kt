@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singandsongs.databinding.PlayListItemBinding
-import com.example.singandsongs.model.PlayList
+import com.example.singandsongs.model.playlist.PlayList
 
 
 class PlayListAdapter(

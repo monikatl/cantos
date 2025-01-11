@@ -14,8 +14,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.singandsongs.R
 import com.example.singandsongs.databinding.DialogAddCantoBinding
-import com.example.singandsongs.model.Canto
-import com.example.singandsongs.model.Kind
+import com.example.singandsongs.model.playlist.Canto
+import com.example.singandsongs.model.playlist.Kind
 import java.net.URLEncoder
 
 class AddCantoDialogFragment(

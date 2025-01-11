@@ -1,24 +1,23 @@
 package com.example.singandsongs.ui.home
 
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.*
-import com.example.singandsongs.data.CantoRepository
-import com.example.singandsongs.data.PlayListRepository
-import com.example.singandsongs.model.*
+import com.example.singandsongs.data.canto.CantoRepository
+import com.example.singandsongs.data.playlist.PlayListRepository
+import com.example.singandsongs.model.playlist.Canto
+import com.example.singandsongs.model.playlist.CantoPlayListCrossRef
+import com.example.singandsongs.model.playlist.Content
+import com.example.singandsongs.model.playlist.Kind
+import com.example.singandsongs.model.playlist.PlayListWithCantos
 import com.example.singandsongs.utils.FilterCondition
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.count
-import kotlinx.coroutines.flow.last
-import kotlinx.coroutines.flow.reduce
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val playListRepository: PlayListRepository,
-    private val cantoRepository: CantoRepository
+  private val playListRepository: PlayListRepository,
+  private val cantoRepository: CantoRepository
 ) : ViewModel() {
 
     private val _filterCondition = MutableLiveData<FilterCondition>().apply {

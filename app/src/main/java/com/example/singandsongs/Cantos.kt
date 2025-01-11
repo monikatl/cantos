@@ -1,7 +1,7 @@
 package com.example.singandsongs
 
-import com.example.singandsongs.model.Canto
-import com.example.singandsongs.model.Kind.*
+import com.example.singandsongs.model.playlist.Canto
+import com.example.singandsongs.model.playlist.Kind.*
 
 object Cantos {
     val list: List<Canto> = listOf(

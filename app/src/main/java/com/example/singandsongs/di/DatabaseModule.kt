@@ -3,6 +3,10 @@ package com.example.singandsongs.di
 import android.content.Context
 import androidx.room.Room
 import com.example.singandsongs.data.*
+import com.example.singandsongs.data.canto.CantoDao
+import com.example.singandsongs.data.canto.CantoRepository
+import com.example.singandsongs.data.playlist.PlayListDao
+import com.example.singandsongs.data.playlist.PlayListRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

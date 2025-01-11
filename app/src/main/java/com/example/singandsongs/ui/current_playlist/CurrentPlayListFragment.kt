@@ -8,15 +8,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
-import com.example.benedictus.src.main.java.SetConverter
 import com.example.singandsongs.R
 import com.example.singandsongs.databinding.FragmentCurrentPlayListBinding
-import com.example.singandsongs.model.CantoAndContent
+import com.example.singandsongs.model.playlist.CantoAndContent
 import com.example.singandsongs.ui.home.CantoAdapter
 import com.example.singandsongs.utils.searchOnGoogle
 import com.google.android.material.snackbar.Snackbar

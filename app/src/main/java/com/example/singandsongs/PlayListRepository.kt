@@ -2,7 +2,7 @@ package com.example.singandsongs
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.example.singandsongs.model.PlayList
+import com.example.singandsongs.model.playlist.PlayList
 import java.time.LocalDate
 
 object PlayListRepository {

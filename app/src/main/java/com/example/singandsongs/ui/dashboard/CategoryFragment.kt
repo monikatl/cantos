@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.singandsongs.databinding.FragmentCategoryBinding
-import com.example.singandsongs.model.Kind
+import com.example.singandsongs.model.playlist.Kind
 import com.example.singandsongs.ui.home.CantoAdapter
 import dagger.hilt.android.AndroidEntryPoint
 

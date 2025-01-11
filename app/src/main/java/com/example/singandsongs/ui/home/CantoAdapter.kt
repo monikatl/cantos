@@ -9,7 +9,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singandsongs.R
 import com.example.singandsongs.databinding.CantoListItemBinding
-import com.example.singandsongs.model.Canto
+import com.example.singandsongs.model.playlist.Canto
 import java.util.*
 import com.example.singandsongs.utils.*
 

@@ -1,4 +1,4 @@
-package com.example.singandsongs.model
+package com.example.singandsongs.model.playlist
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -23,7 +23,7 @@ data class PlayList(
         frequencyCounter++
     }
 
-    fun disconnectPlayList(): PlayList{
+    fun disconnectPlayList(): PlayList {
         isCurrent = false
         return this
     }

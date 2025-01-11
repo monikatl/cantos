@@ -12,7 +12,7 @@ import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.singandsongs.R
 import com.example.singandsongs.databinding.FragmentDashboardBinding
-import com.example.singandsongs.model.Kind
+import com.example.singandsongs.model.playlist.Kind
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

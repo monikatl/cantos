@@ -1,9 +1,9 @@
-package com.example.singandsongs.data
+package com.example.singandsongs.data.playlist
 
 import androidx.room.*
-import com.example.singandsongs.model.CantoPlayListCrossRef
-import com.example.singandsongs.model.PlayList
-import com.example.singandsongs.model.PlayListWithCantos
+import com.example.singandsongs.model.playlist.CantoPlayListCrossRef
+import com.example.singandsongs.model.playlist.PlayList
+import com.example.singandsongs.model.playlist.PlayListWithCantos
 import kotlinx.coroutines.flow.Flow
 
 @Dao

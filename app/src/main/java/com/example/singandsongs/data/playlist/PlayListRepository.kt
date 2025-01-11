@@ -1,9 +1,9 @@
-package com.example.singandsongs.data
+package com.example.singandsongs.data.playlist
 
 import androidx.annotation.WorkerThread
-import com.example.singandsongs.model.CantoPlayListCrossRef
-import com.example.singandsongs.model.PlayList
-import com.example.singandsongs.model.PlayListWithCantos
+import com.example.singandsongs.model.playlist.CantoPlayListCrossRef
+import com.example.singandsongs.model.playlist.PlayList
+import com.example.singandsongs.model.playlist.PlayListWithCantos
 import com.example.singandsongs.utils.SortCondition
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

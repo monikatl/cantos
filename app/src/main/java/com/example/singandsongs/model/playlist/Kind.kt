@@ -1,4 +1,4 @@
-package com.example.singandsongs.model
+package com.example.singandsongs.model.playlist
 
 enum class Kind (val text: String, val color: String) {
     ADVENT("Pieśni Adwetowe", "#380A2E"),

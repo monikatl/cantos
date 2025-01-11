@@ -3,10 +3,10 @@ package com.example.singandsongs.ui.notifications
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
-import com.example.singandsongs.data.PlayListRepository
+import com.example.singandsongs.data.playlist.PlayListRepository
 import com.example.singandsongs.data.PreferencesManager
-import com.example.singandsongs.model.PlayList
-import com.example.singandsongs.model.PlayListWithCantos
+import com.example.singandsongs.model.playlist.PlayList
+import com.example.singandsongs.model.playlist.PlayListWithCantos
 import com.example.singandsongs.utils.SortCondition
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*

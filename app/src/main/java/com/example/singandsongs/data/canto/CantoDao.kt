@@ -1,10 +1,10 @@
-package com.example.singandsongs.data
+package com.example.singandsongs.data.canto
 
 import androidx.room.*
-import com.example.singandsongs.model.Canto
-import com.example.singandsongs.model.CantoAndContent
-import com.example.singandsongs.model.Content
-import com.example.singandsongs.model.Kind
+import com.example.singandsongs.model.playlist.Canto
+import com.example.singandsongs.model.playlist.CantoAndContent
+import com.example.singandsongs.model.playlist.Content
+import com.example.singandsongs.model.playlist.Kind
 import kotlinx.coroutines.flow.Flow
 
 @Dao

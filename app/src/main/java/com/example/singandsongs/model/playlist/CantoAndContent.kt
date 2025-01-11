@@ -1,4 +1,4 @@
-package com.example.singandsongs.model
+package com.example.singandsongs.model.playlist
 
 import androidx.room.Embedded
 import androidx.room.Relation
