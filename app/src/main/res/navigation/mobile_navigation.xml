@@ -48,7 +48,16 @@
         android:id="@+id/navigation_calendar"
         android:name="com.example.singandsongs.ui.calendar.CalendarFragment"
         android:label="fragment_calendar"
-        tools:layout="@layout/fragment_calendar" />
+        tools:layout="@layout/fragment_calendar" >
+      <action
+        android:id="@+id/action_navigation_calendar_to_placesFragment"
+        app:destination="@id/placesFragment" />
+    </fragment>
+  <fragment
+    android:id="@+id/placesFragment"
+    android:name="com.example.singandsongs.ui.calendar.places.PlacesFragment"
+    android:label="fragment_places"
+    tools:layout="@layout/fragment_places" />
 
 
 </navigation>

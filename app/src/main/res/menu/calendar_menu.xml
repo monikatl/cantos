@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <item
+    android:id="@+id/add_place"
+    android:icon="@drawable/church_icon"
+    android:title="dodaj miejsce"
+    app:showAsAction="ifRoom"/>
+
+</menu>
