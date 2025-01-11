@@ -44,14 +44,14 @@
         android:layout_height="wrap_content"
         android:text="@{place.name}"
         android:textSize="21sp"
-        android:layout_weight="5"/>
+        android:layout_weight="4"/>
 
       <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@{place.name}"
+        android:text="@{place.hoursText}"
         android:textSize="21sp"
-        android:layout_weight="0.5"/>
+        android:layout_weight="1"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
