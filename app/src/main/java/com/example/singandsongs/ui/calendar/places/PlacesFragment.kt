@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.singandsongs.databinding.FragmentPlacesBinding
+import com.example.singandsongs.model.playing.Place
 import com.example.singandsongs.ui.calendar.dialogs.AddPlaceDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -37,11 +38,11 @@ class PlacesFragment : Fragment() {
     }
 
   private fun showAddPlaceDialog(): Boolean {
-    val newFragment = AddPlaceDialogFragment()
+    val newFragment = AddPlaceDialogFragment(viewModel.addPlace)
     newFragment.show(activity?.supportFragmentManager!!,  tag)
     return true
   }
 
-  private val onLongClickAction: (Int) -> Unit = {}
+  private val onLongClickAction: (Place) -> Unit = { viewModel.deletePlace.invoke(it) }
   private val onItemClickAction: (Long) -> Unit = {}
 }

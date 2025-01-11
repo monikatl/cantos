@@ -4,14 +4,19 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.singandsongs.R
 import com.example.singandsongs.databinding.DialogAddPlaceBinding
 
-class AddPlaceDialogFragment : DialogFragment() {
+class AddPlaceDialogFragment(
+  private val addPlace: (String, List<String>) -> Unit
+) : DialogFragment() {
 
   private lateinit var binding: DialogAddPlaceBinding
+  private val hourList = mutableListOf("18:00", "17:00")
+  private lateinit var adapter: ArrayAdapter<String>
 
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
     binding = DataBindingUtil.inflate(
@@ -20,6 +25,10 @@ class AddPlaceDialogFragment : DialogFragment() {
       null,
       false
     )
+
+    resolveHourListAdapter()
+
+    binding.addHourButton.setOnClickListener { addHour() }
 
     return AlertDialog.Builder(requireContext())
       .setView(binding.root)
@@ -31,6 +40,22 @@ class AddPlaceDialogFragment : DialogFragment() {
       }
   }
 
-  private fun handlePositiveClick() {}
+  private fun resolveHourListAdapter() {
+    adapter = ArrayAdapter(
+      requireContext(),
+      android.R.layout.simple_list_item_1,
+      hourList
+    )
+    binding.hourList.adapter = adapter
+  }
+  private fun handlePositiveClick() {
+    val name = binding.inputName.text.toString()
+    addPlace.invoke(name, hourList)
+  }
   private fun initializeDialog() {}
+
+  private fun addHour() {
+    hourList.add("18:00")
+    adapter.notifyDataSetChanged()
+  }
 }

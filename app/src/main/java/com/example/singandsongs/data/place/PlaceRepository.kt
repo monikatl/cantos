@@ -1,6 +1,9 @@
 package com.example.singandsongs.data.place
 
-import com.example.singandsongs.data.playlist.PlayListDao
+import androidx.annotation.WorkerThread
+import com.example.singandsongs.model.playing.Place
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class PlaceRepository @Inject constructor(
@@ -8,4 +11,15 @@ class PlaceRepository @Inject constructor(
 )  {
 
   fun getAllPlaces() = placeDao.getAllPlaces()
+
+  @WorkerThread
+  suspend fun insertPlace(place: Place) = withContext(Dispatchers.IO) {
+    placeDao.insertPlace(place)
+  }
+
+  @WorkerThread
+  suspend fun deletePlace(place: Place) = withContext(Dispatchers.IO) {
+    placeDao.deletePlace(place)
+  }
+
 }

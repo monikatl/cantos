@@ -7,7 +7,7 @@ import com.example.singandsongs.databinding.PlaceItemBinding
 import com.example.singandsongs.model.playing.Place
 
 class PlaceAdapter(
-  private val onLongClickAction: (Int) -> Unit,
+  private val onLongClickAction: (Place) -> Unit,
   private val onItemClickAction: (Long) -> Unit
 ): RecyclerView.Adapter<PlaceAdapter.IntentHolder>() {
 
@@ -40,7 +40,7 @@ class PlaceAdapter(
     holder.bind(place)
 
     holder.itemView.setOnLongClickListener {
-      onLongClickAction.invoke(position)
+      onLongClickAction.invoke(place)
       true
     }
 
