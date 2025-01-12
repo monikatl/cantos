@@ -5,6 +5,8 @@ import androidx.room.Room
 import com.example.singandsongs.data.*
 import com.example.singandsongs.data.canto.CantoDao
 import com.example.singandsongs.data.canto.CantoRepository
+import com.example.singandsongs.data.day.DayDao
+import com.example.singandsongs.data.day.DayRepository
 import com.example.singandsongs.data.place.PlaceDao
 import com.example.singandsongs.data.place.PlaceRepository
 import com.example.singandsongs.data.playing.PlayingDao
@@ -55,5 +57,12 @@ class DatabaseModule {
     @Provides
     fun providesPlayingRepository(playingDao: PlayingDao) : PlayingRepository
       = PlayingRepository(playingDao)
+
+    @Provides
+    fun providesDayDao(database: Database): DayDao = database.dayDao()
+
+    @Provides
+    fun providesDayRepository(dayDao: DayDao) : DayRepository
+      = DayRepository(dayDao)
 
 }

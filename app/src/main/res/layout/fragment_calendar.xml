@@ -1,5 +1,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
   <data>
     <variable
       name="viewModel"
@@ -14,11 +15,9 @@
     <GridLayout
       android:id="@+id/gridLayout"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_height="wrap_content"
       android:columnCount="7"
       android:padding="16dp"
-      android:rowCount="6"
-      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent">
@@ -72,9 +71,18 @@
         android:layout_columnWeight="1"
         android:gravity="center"
         android:text="Sb" />
-
-
     </GridLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/days"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:orientation="vertical"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/gridLayout"
+      tools:listitem="@layout/day_item" />
 
 
 
