@@ -35,10 +35,12 @@ class AddPlayingDialogFragment(
 
   @RequiresApi(Build.VERSION_CODES.O)
   var date: LocalDate = LocalDate.now()
+  private var name: String = ""
   private var place: Place? = null
-  private var time: String? = null
+  private var time: String = ""
   private var playList: PlayList? = null
 
+  @RequiresApi(Build.VERSION_CODES.O)
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
     binding = DataBindingUtil.inflate(
       LayoutInflater.from(requireContext()),
@@ -57,12 +59,14 @@ class AddPlayingDialogFragment(
       }
   }
 
+  @RequiresApi(Build.VERSION_CODES.O)
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
     setListsObservers()
+    binding.date.setOnClickListener { showDatePickerDialog() }
     return binding.root
   }
 
@@ -75,9 +79,12 @@ class AddPlayingDialogFragment(
     }
   }
 
+  @RequiresApi(Build.VERSION_CODES.O)
   private fun handlePositiveClick() {
-//    val newPlaying = Playing()
-//    action.invoke(newPlaying)
+    val playListId = playList?.playListId ?: 0
+    val placeId = place?.placeId ?: 0
+    val newPlaying = Playing(date, name, placeId, time, playListId)
+    action.invoke(newPlaying)
   }
 
   private fun resolveDialogFieldsValues() {
@@ -106,11 +113,6 @@ class AddPlayingDialogFragment(
     }, year, month, day)
 
     datePickerDialog.show()
-  }
-
-  private fun setupDropdowns() {
-    setupPlaceDropdown()
-    setupPlayListDropdown()
   }
 
   private fun setupPlaceDropdown() {

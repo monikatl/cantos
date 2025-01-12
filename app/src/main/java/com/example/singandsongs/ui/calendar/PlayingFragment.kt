@@ -53,7 +53,9 @@ class PlayingFragment : Fragment() {
     val newFragment = AddPlayingDialogFragment { addNewPlaying(it) }
     newFragment.show(activity?.supportFragmentManager!!,  tag)
   }
-  private fun addNewPlaying(playing: Playing) {}
+  private fun addNewPlaying(playing: Playing) {
+    viewModel.addPlaying(playing)
+  }
 
   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
     inflater.inflate(R.menu.calendar_menu, menu)

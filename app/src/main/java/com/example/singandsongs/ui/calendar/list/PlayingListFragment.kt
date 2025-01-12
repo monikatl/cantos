@@ -1,14 +1,19 @@
 package com.example.singandsongs.ui.calendar.list
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.singandsongs.R
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.example.singandsongs.databinding.FragmentPlayingListBinding
+import com.example.singandsongs.model.playing.Playing
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PlayingListFragment : Fragment() {
+
+  private lateinit var binding: FragmentPlayingListBinding
 
     companion object {
         fun newInstance() = PlayingListFragment()
@@ -16,16 +21,23 @@ class PlayingListFragment : Fragment() {
 
     private val viewModel: PlayingListViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // TODO: Use the ViewModel
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_playing_list, container, false)
+        binding = FragmentPlayingListBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
+
+        val adapter = PlayingAdapter(onLongClickAction, onItemClickAction)
+        binding.playings.adapter = adapter
+
+        viewModel.playingList.observe(viewLifecycleOwner) {
+          adapter.setList(viewModel.playingList.value ?: emptyList())
+        }
+
+        return binding.root
     }
+
+  private val onLongClickAction: (Playing) -> Unit = { viewModel.deletePlaying(it) }
+  private val onItemClickAction: (Long) -> Unit = {}
 }
