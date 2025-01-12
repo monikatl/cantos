@@ -8,8 +8,8 @@ import com.example.singandsongs.model.playing.Day
 import com.example.singandsongs.model.playing.FullDay
 
 class DayAdapter(
-  private val onLongClickAction: (Day) -> Unit,
-  private val onItemClickAction: (Long) -> Unit
+  private val onLongClickAction: (Day?) -> Unit,
+  private val onItemClickAction: (FullDay) -> Unit
 ): RecyclerView.Adapter<DayAdapter.IntentHolder>() {
 
   private var datalist:List<FullDay> = emptyList()
@@ -46,7 +46,7 @@ class DayAdapter(
     }
 
     holder.itemView.setOnClickListener {
-      onItemClickAction.invoke(day.day.dayId)
+      onItemClickAction.invoke(day)
     }
   }
 

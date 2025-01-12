@@ -5,35 +5,58 @@
     <variable
       name="viewModel"
       type="com.example.singandsongs.ui.calendar.calendar.CalendarViewModel" />
+
+    <variable
+      name="sectionText"
+      type="String" />
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+      android:id="@+id/textView6"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="KALENDARZ"
+      android:letterSpacing="0.1"
+      android:textSize="20sp"
+      android:layout_marginStart="8dp"
+      android:layout_marginTop="8dp"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+      android:id="@+id/monthYear"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="STYCZEŃ 2025"
+      android:letterSpacing="0.1"
+      android:textSize="20sp"
+      android:layout_marginEnd="8dp"
+      android:layout_marginTop="8dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
 
     <GridLayout
       android:id="@+id/gridLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:background="@color/quantum_grey50"
       android:columnCount="7"
-      android:padding="16dp"
+      android:layout_marginTop="16dp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent">
+      app:layout_constraintTop_toBottomOf="@+id/textView6">
 
       <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_columnWeight="1"
         android:gravity="center"
-        android:text="Ndz" />
-
-      <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_columnWeight="1"
-        android:gravity="center"
+        android:letterSpacing="0.1"
         android:text="Pn" />
 
       <!-- Second Cell -->
@@ -42,6 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_columnWeight="1"
         android:gravity="center"
+        android:letterSpacing="0.1"
         android:text="Wt" />
 
       <TextView
@@ -49,6 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_columnWeight="1"
         android:gravity="center"
+        android:letterSpacing="0.1"
         android:text="Śr" />
 
       <TextView
@@ -56,6 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_columnWeight="1"
         android:gravity="center"
+        android:letterSpacing="0.1"
         android:text="Czw" />
 
       <TextView
@@ -63,6 +89,7 @@
         android:layout_height="wrap_content"
         android:layout_columnWeight="1"
         android:gravity="center"
+        android:letterSpacing="0.1"
         android:text="Pt" />
 
       <TextView
@@ -70,21 +97,52 @@
         android:layout_height="wrap_content"
         android:layout_columnWeight="1"
         android:gravity="center"
+        android:letterSpacing="0.1"
         android:text="Sb" />
+
+      <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:gravity="center"
+        android:letterSpacing="0.1"
+        android:text="Ndz" />
     </GridLayout>
 
     <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/days"
       android:layout_width="match_parent"
-      android:layout_height="0dp"
+      android:layout_height="300dp"
       android:orientation="vertical"
-      app:layout_constraintBottom_toBottomOf="parent"
+      android:layout_marginTop="16dp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/gridLayout"
       tools:listitem="@layout/day_item" />
 
+    <TextView
+      android:id="@+id/textView7"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@{sectionText}"
+      android:textSize="18sp"
+      android:letterSpacing="0.3"
+      android:gravity="center"
+      android:layout_marginTop="8dp"
+      android:background="@color/quantum_grey50"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/days" />
 
+    <FrameLayout
+      android:id="@+id/playing_list_fragment_container"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_marginTop="16dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
