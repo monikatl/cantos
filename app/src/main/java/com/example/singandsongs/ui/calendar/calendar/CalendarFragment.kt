@@ -13,6 +13,8 @@ import com.example.singandsongs.R
 import com.example.singandsongs.databinding.FragmentCalendarBinding
 import com.example.singandsongs.model.playing.Day
 import com.example.singandsongs.model.playing.FullDay
+import com.example.singandsongs.model.playing.Playing
+import com.example.singandsongs.ui.calendar.dialogs.AddPlayingDialogFragment
 import com.example.singandsongs.ui.calendar.list.PlayingListFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -78,7 +80,16 @@ class CalendarFragment : Fragment() {
     }
   }
 
-  private val onLongClickAction: (Day?) -> Unit = { viewModel.deletePlaying(it) }
+  private val onLongClickAction: (Day?) -> Unit = { showAddPlayingDialog() }
   private val onItemClickAction: (FullDay) -> Unit = { viewModel.selectDay(it) }
+
+  private fun showAddPlayingDialog() {
+    val newFragment = AddPlayingDialogFragment { addNewPlaying(it) }
+    newFragment.show(activity?.supportFragmentManager!!,  tag)
+  }
+
+  private fun addNewPlaying(it: Playing) {
+
+  }
 
 }

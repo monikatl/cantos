@@ -5,11 +5,11 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.singandsongs.data.day.DayRepository
 import com.example.singandsongs.model.playing.Day
 import com.example.singandsongs.model.playing.FullDay
-import com.example.singandsongs.model.playing.FullPlaying
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,7 +29,7 @@ class CalendarViewModel @Inject constructor(
   }
 
   @RequiresApi(Build.VERSION_CODES.O)
-  var days: LiveData<List<Day?>> = MutableLiveData(dayRepository.getAllDays())
+  var days: LiveData<List<Day?>> = dayRepository.getAllDays().asLiveData()
 
   fun deletePlaying(day: Day?) {
 
