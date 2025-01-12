@@ -12,80 +12,15 @@
     android:layout_height="match_parent">
 
 
-    <GridLayout
-      android:id="@+id/gridLayout"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:columnCount="7"
-      android:padding="16dp"
-      android:rowCount="6"
+    <androidx.viewpager2.widget.ViewPager2
+      android:id="@+id/viewPager"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_marginTop="16dp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent">
-
-      <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_columnWeight="1"
-        android:gravity="center"
-        android:text="Ndz" />
-
-      <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_columnWeight="1"
-        android:gravity="center"
-        android:text="Pn" />
-
-      <!-- Second Cell -->
-      <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_columnWeight="1"
-        android:gravity="center"
-        android:text="Wt" />
-
-      <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_columnWeight="1"
-        android:gravity="center"
-        android:text="Śr" />
-
-      <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_columnWeight="1"
-        android:gravity="center"
-        android:text="Czw" />
-
-      <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_columnWeight="1"
-        android:gravity="center"
-        android:text="Pt" />
-
-      <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_columnWeight="1"
-        android:gravity="center"
-        android:text="Sb" />
-
-
-    </GridLayout>
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-      android:id="@+id/add_playing"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginEnd="16dp"
-      android:layout_marginBottom="100dp"
-      app:icon="@drawable/baseline_add_24"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent" />
+      app:layout_constraintTop_toTopOf="parent" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
