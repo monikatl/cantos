@@ -17,8 +17,8 @@ class PlacesViewModel @Inject constructor(
 ): ViewModel() {
   var places: LiveData<List<Place>> = placeRepository.getAllPlaces().asLiveData()
 
-  val addPlace: (String, List<String>) -> Unit = { name, hours ->
-    val place = Place(name, hours)
+  val addPlace: (String, String, List<String>) -> Unit = { name, address, hours ->
+    val place = Place(name, address, hours)
     viewModelScope.launch(Dispatchers.IO) {
       placeRepository.insertPlace(place)
     }

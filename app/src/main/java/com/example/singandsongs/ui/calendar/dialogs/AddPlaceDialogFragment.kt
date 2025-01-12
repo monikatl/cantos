@@ -11,7 +11,7 @@ import com.example.singandsongs.R
 import com.example.singandsongs.databinding.DialogAddPlaceBinding
 
 class AddPlaceDialogFragment(
-  private val addPlace: (String, List<String>) -> Unit
+  private val addPlace: (String, String, List<String>) -> Unit
 ) : DialogFragment() {
 
   private lateinit var binding: DialogAddPlaceBinding
@@ -51,7 +51,8 @@ class AddPlaceDialogFragment(
   }
   private fun handlePositiveClick() {
     val name = binding.inputName.text.toString()
-    addPlace.invoke(name, hourList)
+    val address = binding.inputAddress.text.toString()
+    addPlace.invoke(name, address, hourList)
   }
   private fun initializeDialog() {}
 

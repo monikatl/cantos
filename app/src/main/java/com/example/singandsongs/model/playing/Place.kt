@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "place_table")
 data class Place (
   val name: String,
-  //val address: Address,
+  val address: String,
   val hours: List<String>,
   @PrimaryKey(autoGenerate = true)
   val placeId: Long = 0
