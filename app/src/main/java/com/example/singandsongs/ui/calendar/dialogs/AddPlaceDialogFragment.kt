@@ -29,6 +29,7 @@ class AddPlaceDialogFragment(
     resolveHourListAdapter()
 
     binding.addHourButton.setOnClickListener { addHour() }
+    binding.mapButton.setOnClickListener { showMapDialog() }
 
     return AlertDialog.Builder(requireContext())
       .setView(binding.root)
@@ -57,5 +58,10 @@ class AddPlaceDialogFragment(
   private fun addHour() {
     hourList.add("18:00")
     adapter.notifyDataSetChanged()
+  }
+
+  private fun showMapDialog() {
+    val mapDialog = MapDialogFragment()
+    mapDialog.show(activity?.supportFragmentManager!!, "MapDialog")
   }
 }
