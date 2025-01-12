@@ -29,15 +29,11 @@
             android:paddingBottom="8dp"
             android:paddingHorizontal="4dp">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="@{String.valueOf(playList.playListId)}"
-                android:textStyle="bold"
-                android:textSize="21sp"
-                android:textAlignment="center"
-                android:gravity="center"
-                android:layout_weight="1"/>
+          <ImageView
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="8dp"
+            android:src="@drawable/set_color"/>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="0dp"

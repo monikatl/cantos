@@ -41,23 +41,24 @@
     <fragment
         android:id="@+id/categoryFragment"
         android:name="com.example.singandsongs.ui.dashboard.CategoryFragment"
-        android:label="fragment_category"
+        android:label="Kategorie pieśni"
         tools:layout="@layout/fragment_category" />
 
     <fragment
         android:id="@+id/navigation_playing"
         android:name="com.example.singandsongs.ui.calendar.PlayingFragment"
-        android:label="fragment_calendar"
+        android:label="Grania"
         tools:layout="@layout/fragment_playing" >
       <action
         android:id="@+id/action_navigation_playing_to_placesFragment"
         app:destination="@id/placesFragment" />
     </fragment>
-  <fragment
-    android:id="@+id/placesFragment"
-    android:name="com.example.singandsongs.ui.calendar.places.PlacesFragment"
-    android:label="fragment_places"
-    tools:layout="@layout/fragment_places" />
+
+    <fragment
+      android:id="@+id/placesFragment"
+      android:name="com.example.singandsongs.ui.calendar.places.PlacesFragment"
+      android:label="Miejsca"
+      tools:layout="@layout/fragment_places" />
 
 
 </navigation>
