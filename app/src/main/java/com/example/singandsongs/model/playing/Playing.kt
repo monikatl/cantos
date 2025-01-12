@@ -1,7 +1,7 @@
 package com.example.singandsongs.model.playing
 
 import androidx.room.Entity
-import com.example.singandsongs.model.playlist.PlayList
+import androidx.room.PrimaryKey
 import java.time.LocalDate
 
 
@@ -9,7 +9,9 @@ import java.time.LocalDate
 data class Playing(
   val data: LocalDate,
   val name: String,
-  val place: Place,
-  val event: Event,
-  val playList: PlayList
+  val placeId: Long,
+  val time: String,
+  val playListId: Long,
+  @PrimaryKey(autoGenerate = true)
+  val playingId: Long = 0
 )

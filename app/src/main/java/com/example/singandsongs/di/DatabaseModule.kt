@@ -7,6 +7,8 @@ import com.example.singandsongs.data.canto.CantoDao
 import com.example.singandsongs.data.canto.CantoRepository
 import com.example.singandsongs.data.place.PlaceDao
 import com.example.singandsongs.data.place.PlaceRepository
+import com.example.singandsongs.data.playing.PlayingDao
+import com.example.singandsongs.data.playing.PlayingRepository
 import com.example.singandsongs.data.playlist.PlayListDao
 import com.example.singandsongs.data.playlist.PlayListRepository
 import dagger.Module
@@ -46,5 +48,12 @@ class DatabaseModule {
     @Provides
     fun providesPlaceRepository(placeDao: PlaceDao) : PlaceRepository
             = PlaceRepository(placeDao)
+
+    @Provides
+    fun providesPlayingDao(database: Database): PlayingDao = database.playingDao()
+
+    @Provides
+    fun providesPlayingRepository(playingDao: PlayingDao) : PlayingRepository
+      = PlayingRepository(playingDao)
 
 }
