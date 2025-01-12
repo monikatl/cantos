@@ -14,6 +14,9 @@ import javax.inject.Inject
 class PlayListRepository @Inject constructor(
     private val playListDao: PlayListDao
 ) {
+
+    fun getAllPlayLists(): Flow<List<PlayList>> = playListDao.getPlayList()
+
     fun getAllPlayLists(condition: SortCondition): Flow<List<PlayList>> {
         return playListDao.getPlayList().map { pl ->
             when(condition) {

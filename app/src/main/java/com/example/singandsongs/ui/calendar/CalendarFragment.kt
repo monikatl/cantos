@@ -13,7 +13,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.singandsongs.R
 import com.example.singandsongs.databinding.FragmentCalendarBinding
+import com.example.singandsongs.model.playing.Place
 import com.example.singandsongs.model.playing.Playing
+import com.example.singandsongs.model.playlist.PlayList
 import com.example.singandsongs.ui.calendar.dialogs.AddPlaceDialogFragment
 import com.example.singandsongs.ui.calendar.dialogs.AddPlayingDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,7 +35,6 @@ class CalendarFragment : Fragment() {
     binding.viewModel = viewModel
 
     binding.addPlaying.setOnClickListener { showAddPlayingDialog() }
-
 
     return binding.root
   }
