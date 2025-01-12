@@ -12,10 +12,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.singandsongs.R
-import com.example.singandsongs.databinding.FragmentCalendarBinding
 import com.example.singandsongs.databinding.FragmentPlayingBinding
 import com.example.singandsongs.model.playing.Playing
-import com.example.singandsongs.ui.calendar.calendar.CalendarViewModel
 import com.example.singandsongs.ui.calendar.dialogs.AddPlayingDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
