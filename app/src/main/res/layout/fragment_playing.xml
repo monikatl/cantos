@@ -4,7 +4,7 @@
   <data>
     <variable
       name="viewModel"
-      type="com.example.singandsongs.ui.calendar.CalendarViewModel" />
+      type="com.example.singandsongs.ui.calendar.PlayingViewModel" />
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout

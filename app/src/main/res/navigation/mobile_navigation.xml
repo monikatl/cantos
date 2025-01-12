@@ -45,12 +45,12 @@
         tools:layout="@layout/fragment_category" />
 
     <fragment
-        android:id="@+id/navigation_calendar"
-        android:name="com.example.singandsongs.ui.calendar.CalendarFragment"
+        android:id="@+id/navigation_playing"
+        android:name="com.example.singandsongs.ui.calendar.PlayingFragment"
         android:label="fragment_calendar"
-        tools:layout="@layout/fragment_calendar" >
+        tools:layout="@layout/fragment_playing" >
       <action
-        android:id="@+id/action_navigation_calendar_to_placesFragment"
+        android:id="@+id/action_navigation_playing_to_placesFragment"
         app:destination="@id/placesFragment" />
     </fragment>
   <fragment

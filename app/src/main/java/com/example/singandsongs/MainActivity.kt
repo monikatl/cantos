@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
             setOf(
               R.id.navigation_home,
               R.id.navigation_dashboard,
-              R.id.navigation_calendar,
+              R.id.navigation_playing,
               R.id.navigation_notifications,
               R.id.currentPlayListFragment
             )

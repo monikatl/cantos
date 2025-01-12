@@ -15,12 +15,10 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.example.singandsongs.R
 import com.example.singandsongs.databinding.DialogAddPlayingBinding
-import com.example.singandsongs.model.playing.Event
 import com.example.singandsongs.model.playing.Place
 import com.example.singandsongs.model.playing.Playing
-import com.example.singandsongs.model.playlist.Kind
 import com.example.singandsongs.model.playlist.PlayList
-import com.example.singandsongs.ui.calendar.CalendarViewModel
+import com.example.singandsongs.ui.calendar.PlayingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -33,7 +31,7 @@ class AddPlayingDialogFragment(
 ) : DialogFragment() {
 
   private lateinit var binding: DialogAddPlayingBinding
-  private val viewModel: CalendarViewModel by viewModels()
+  private val viewModel: PlayingViewModel by viewModels()
 
   @RequiresApi(Build.VERSION_CODES.O)
   var date: LocalDate = LocalDate.now()

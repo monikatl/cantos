@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class CalendarViewModel @Inject constructor(
+class PlayingViewModel @Inject constructor(
   private val placeRepository: PlaceRepository,
   private val playListRepository: PlayListRepository
 ) : ViewModel() {
