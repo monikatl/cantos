@@ -1,7 +1,9 @@
 package com.example.singandsongs.ui.calendar.calendar
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singandsongs.databinding.DayItemBinding
 import com.example.singandsongs.model.playing.Day
@@ -15,8 +17,11 @@ class DayAdapter(
   private var datalist:List<FullDay> = emptyList()
 
   fun setList(datalist:List<FullDay>) {
+    val diffCallback = MyDiffCallback(this.datalist, datalist)
+    val diffResult = DiffUtil.calculateDiff(diffCallback)
+
     this.datalist = datalist
-    notifyDataSetChanged()
+    diffResult.dispatchUpdatesTo(this)
   }
 
   fun filterList(filterList: List<FullDay>) {
@@ -40,6 +45,12 @@ class DayAdapter(
     val day = datalist[position]
     holder.bind(day)
 
+    if (day.playings.isNotEmpty()) {
+      holder.itemView.setBackgroundColor(Color.BLUE)
+    } else {
+      holder.itemView.setBackgroundColor(Color.WHITE)
+    }
+
     holder.itemView.setOnLongClickListener {
       onLongClickAction.invoke(day.day)
       true
@@ -52,5 +63,23 @@ class DayAdapter(
 
   override fun getItemCount(): Int {
     return datalist.size
+  }
+
+  class MyDiffCallback(
+    private val oldList: List<FullDay>,
+    private val newList: List<FullDay>
+  ) : DiffUtil.Callback() {
+
+    override fun getOldListSize(): Int = oldList.size
+
+    override fun getNewListSize(): Int = newList.size
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+      return oldList[oldItemPosition].number == newList[newItemPosition].number
+    }
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+      return oldList[oldItemPosition] == newList[newItemPosition]
+    }
   }
 }

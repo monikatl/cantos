@@ -13,6 +13,9 @@ interface PlayingDao {
   @Query("SELECT * FROM playing_table")
   fun getAllPlayings(): Flow<List<Playing>>
 
+  @Query("SELECT * FROM playing_table WHERE playingId = :id")
+  fun getPlayingById(id: Long): Playing
+
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insertPlaying(playing: Playing): Long
 

@@ -13,25 +13,33 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.singandsongs.R
 import com.example.singandsongs.databinding.DialogAddPlayingBinding
+import com.example.singandsongs.model.playing.Day
 import com.example.singandsongs.model.playing.Place
 import com.example.singandsongs.model.playing.Playing
 import com.example.singandsongs.model.playlist.PlayList
 import com.example.singandsongs.ui.calendar.PlayingViewModel
+import com.example.singandsongs.ui.calendar.calendar.CalendarViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.Calendar
 import java.util.Locale
 
+@RequiresApi(Build.VERSION_CODES.O)
 @AndroidEntryPoint
 class AddPlayingDialogFragment(
-  private val action: (Playing) -> Unit
+  val day: Day? = null,
+  private val action: (Playing) -> CompletableDeferred<Long>
 ) : DialogFragment() {
 
   private lateinit var binding: DialogAddPlayingBinding
   private val viewModel: PlayingViewModel by viewModels()
+  private val calendarViewModel: CalendarViewModel by viewModels()
 
   @RequiresApi(Build.VERSION_CODES.O)
   var date: LocalDate = LocalDate.now()
@@ -39,6 +47,10 @@ class AddPlayingDialogFragment(
   private var place: Place? = null
   private var time: String = ""
   private var playList: PlayList? = null
+
+  init {
+      day?.let { date = day.date }
+  }
 
   @RequiresApi(Build.VERSION_CODES.O)
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -55,7 +67,7 @@ class AddPlayingDialogFragment(
       .setNegativeButton("Anuluj") { dialog, _ -> dialog.dismiss() }
       .create()
       .apply {
-        setOnShowListener { initializeDialog() }
+        setOnShowListener {  }
       }
   }
 
@@ -66,7 +78,7 @@ class AddPlayingDialogFragment(
     savedInstanceState: Bundle?
   ): View {
     setListsObservers()
-    binding.date.setOnClickListener { showDatePickerDialog() }
+    binding.inputDate.setOnClickListener { showDatePickerDialog() }
     return binding.root
   }
 
@@ -81,18 +93,26 @@ class AddPlayingDialogFragment(
 
   @RequiresApi(Build.VERSION_CODES.O)
   private fun handlePositiveClick() {
+    lifecycleScope.launch {
+      val playingId = resolveNewPlaying()
+      editDay(playingId)
+    }
+  }
+
+  @RequiresApi(Build.VERSION_CODES.O)
+  private suspend fun resolveNewPlaying(): Long {
     val playListId = playList?.playListId ?: 0
     val placeId = place?.placeId ?: 0
     val newPlaying = Playing(date, name, placeId, time, playListId)
-    action.invoke(newPlaying)
+    val id = action.invoke(newPlaying)
+    return id.await()
   }
 
-  private fun resolveDialogFieldsValues() {
-
-  }
-
-  private fun initializeDialog() {
-
+  @RequiresApi(Build.VERSION_CODES.O)
+  private fun editDay(playingId: Long) {
+    lifecycleScope.launch {
+      calendarViewModel.editDay(date, playingId)
+    }
   }
 
   @RequiresApi(Build.VERSION_CODES.O)
@@ -109,7 +129,7 @@ class AddPlayingDialogFragment(
 
       val formattedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(selectedDate.time)
       binding.inputDate.setText(formattedDate)
-      date = LocalDate.of(year, month, day)
+      date = LocalDate.of(year, month + 1, day)
     }, year, month, day)
 
     datePickerDialog.show()

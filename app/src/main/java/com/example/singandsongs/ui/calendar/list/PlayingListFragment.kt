@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.singandsongs.databinding.FragmentPlayingListBinding
 import com.example.singandsongs.model.playing.Playing
@@ -19,7 +20,7 @@ class PlayingListFragment : Fragment() {
         fun newInstance() = PlayingListFragment()
     }
 
-    private val viewModel: PlayingListViewModel by viewModels()
+    private val viewModel: PlayingListViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

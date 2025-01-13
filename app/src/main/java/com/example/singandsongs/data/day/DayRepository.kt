@@ -10,11 +10,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 import javax.inject.Inject
 
 class DayRepository @Inject constructor(
   private val dayDao: DayDao
 ) {
+
   @RequiresApi(Build.VERSION_CODES.O)
   fun getAllDays(): Flow<List<Day?>> {
     val days = dayDao.getAllDays()
@@ -33,6 +35,12 @@ class DayRepository @Inject constructor(
   }
 
   @WorkerThread
+  @RequiresApi(Build.VERSION_CODES.O)
+  suspend fun getDayByDate(date: LocalDate) = withContext(Dispatchers.IO) {
+    dayDao.getDayByDate(date)
+  }
+
+  @WorkerThread
   suspend fun insertDay(day: Day) = withContext(Dispatchers.IO) {
     dayDao.insertDay(day)
   }
@@ -40,6 +48,11 @@ class DayRepository @Inject constructor(
   @WorkerThread
   suspend fun deleteDay(day: Day) = withContext(Dispatchers.IO) {
     dayDao.deleteDay(day)
+  }
+
+  @WorkerThread
+  suspend fun updateDay(day: Day) = withContext(Dispatchers.IO) {
+    dayDao.updateDay(day)
   }
 
 }

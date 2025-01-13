@@ -33,8 +33,8 @@ class PlayingListViewModel @Inject constructor(
     addSource(playLists) { updatePlayingList() }
   }
 
-  private fun updatePlayingList() {
-    val currentPlayings = playings.value ?: emptyList()
+  fun updatePlayingList(dayList: List<Playing>? = null) {
+    val currentPlayings = dayList ?: playings.value ?: emptyList()
     val currentPlaces = places.value ?: emptyList()
     val currentPlayLists = playLists.value ?: emptyList()
 

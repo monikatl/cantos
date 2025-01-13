@@ -11,7 +11,9 @@ import com.example.singandsongs.model.playing.Place
 import com.example.singandsongs.model.playing.Playing
 import com.example.singandsongs.model.playlist.PlayList
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
@@ -25,8 +27,8 @@ class PlayingViewModel @Inject constructor(
   var places: LiveData<List<Place>> = placeRepository.getAllPlaces().asLiveData()
   var playLists: LiveData<List<PlayList>> = playListRepository.getAllPlayLists().asLiveData()
 
-  fun addPlaying(playing: Playing) {
-    viewModelScope.launch {
+  suspend fun addPlaying(playing: Playing): Long {
+    return withContext(Dispatchers.IO) {
       playingRepository.insertPlaying(playing)
     }
   }

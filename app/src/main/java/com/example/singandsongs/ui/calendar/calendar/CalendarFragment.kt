@@ -7,22 +7,30 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.singandsongs.R
 import com.example.singandsongs.databinding.FragmentCalendarBinding
 import com.example.singandsongs.model.playing.Day
 import com.example.singandsongs.model.playing.FullDay
 import com.example.singandsongs.model.playing.Playing
+import com.example.singandsongs.ui.calendar.PlayingViewModel
 import com.example.singandsongs.ui.calendar.dialogs.AddPlayingDialogFragment
 import com.example.singandsongs.ui.calendar.list.PlayingListFragment
+import com.example.singandsongs.ui.calendar.list.PlayingListViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CalendarFragment : Fragment() {
 
   private lateinit var binding: FragmentCalendarBinding
   private val viewModel: CalendarViewModel by viewModels()
+  private val playingViewModel: PlayingViewModel by viewModels()
+  private val playingListViewModel: PlayingListViewModel by activityViewModels()
 
   @RequiresApi(Build.VERSION_CODES.O)
   override fun onCreateView(
@@ -47,9 +55,12 @@ class CalendarFragment : Fragment() {
     val layoutManager = GridLayoutManager(requireContext(), 7)
     binding.days.layoutManager = layoutManager
 
-    viewModel.days.observe(viewLifecycleOwner) {
-      val fullDays = it.map { day -> FullDay.convertToFullDay(day, emptyList()) }
-      adapter.setList(fullDays)
+    viewModel.fullDays.observe(viewLifecycleOwner) {
+      adapter.setList(it)
+    }
+
+    viewModel.selectedDay.observe(viewLifecycleOwner) {
+      playingListViewModel.updatePlayingList(it?.playings)
     }
   }
 
@@ -80,16 +91,23 @@ class CalendarFragment : Fragment() {
     }
   }
 
-  private val onLongClickAction: (Day?) -> Unit = { showAddPlayingDialog() }
+  @RequiresApi(Build.VERSION_CODES.O)
+  private val onLongClickAction: (Day?) -> Unit = { showAddPlayingDialog(it) }
   private val onItemClickAction: (FullDay) -> Unit = { viewModel.selectDay(it) }
 
-  private fun showAddPlayingDialog() {
-    val newFragment = AddPlayingDialogFragment { addNewPlaying(it) }
+  @RequiresApi(Build.VERSION_CODES.O)
+  private fun showAddPlayingDialog(day: Day?) {
+    val newFragment = AddPlayingDialogFragment(day) { addNewPlaying(it) }
     newFragment.show(activity?.supportFragmentManager!!,  tag)
   }
 
-  private fun addNewPlaying(it: Playing) {
-
+  private fun addNewPlaying(playing: Playing): CompletableDeferred<Long> {
+    val deferred = CompletableDeferred<Long>()
+    lifecycleScope.launch {
+      val result = playingViewModel.addPlaying(playing)
+      deferred.complete(result)
+    }
+    return deferred
   }
 
 }

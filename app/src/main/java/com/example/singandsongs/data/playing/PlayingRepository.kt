@@ -12,6 +12,11 @@ class PlayingRepository @Inject constructor(
   fun getAllPlayings() = playingDao.getAllPlayings()
 
   @WorkerThread
+  suspend fun getPlayingById(id: Long) =  withContext(Dispatchers.IO) {
+    playingDao.getPlayingById(id)
+  }
+
+  @WorkerThread
   suspend fun insertPlaying(playing: Playing) = withContext(Dispatchers.IO) {
     playingDao.insertPlaying(playing)
   }
