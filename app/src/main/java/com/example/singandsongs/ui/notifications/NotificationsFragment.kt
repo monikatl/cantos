@@ -4,147 +4,183 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import com.example.singandsongs.utils.SortCondition.*
 import androidx.annotation.RequiresApi
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.singandsongs.R
 import com.example.singandsongs.databinding.FragmentNotificationsBinding
+import com.example.singandsongs.ui.components.YesNoDialog
+import com.example.singandsongs.ui.components.createAndShowSimpleYesNoDialog
+import com.example.singandsongs.ui.components.createAndShowYesNoNeutralDialog
 import dagger.hilt.android.AndroidEntryPoint
+
+@RequiresApi(Build.VERSION_CODES.O)
 @AndroidEntryPoint
 class NotificationsFragment : Fragment() {
 
-    private val viewModel: NotificationsViewModel by viewModels()
-    private lateinit var binding: FragmentNotificationsBinding
-    var list = emptyList<String>()
+  private val viewModel: NotificationsViewModel by viewModels()
+  private lateinit var binding: FragmentNotificationsBinding
+  private lateinit var adapter: PlayListAdapter
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+  var list = emptyList<String>()
 
-        binding = FragmentNotificationsBinding.inflate(inflater, container, false)
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View {
 
-        val adapter = PlayListAdapter(setCurrentPlayList, resolveCantoContent)
-        binding.allPlayLists.adapter = adapter
+    binding = FragmentNotificationsBinding.inflate(inflater, container, false)
 
-        viewModel.playLists.observe(viewLifecycleOwner) {
-            adapter.setList(viewModel.playLists.value ?: emptyList())
-        }
+    createPlayListAdapter()
+    setObservers()
+    setListeners()
+    setAppBarMenuProvider()
 
-        viewModel.id.observe(viewLifecycleOwner) {  }
 
-        viewModel.playListWithCantos.observe(viewLifecycleOwner) { if(viewModel.id.value != 0L) showCantosBottomSheet() }
-
-        binding.addPlayListButton.setOnClickListener { showAddPlayListDialog() }
-
-        binding.materialButtonToggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
-            if(isChecked) {
-                val order =  when(checkedId) {
-                    R.id.a_z -> AZ
-                    R.id.z_a -> ZA
-                    R.id.freqAsc -> FREQ_ASC
-                    R.id.freqDesc -> FREQ_DESC
-                    R.id.dateAsc -> DATE_ASC
-                    R.id.dateDesc -> DATE_DESC
-                    else -> BY_ID
-                }
-                viewModel.choseSortCondition(order)
-            }
-        }
-        return binding.root
-    }
+    return binding.root
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setHasOptionsMenu(true)
   }
 
-    private val resolveCantoContent: (Long) -> Unit = {playListId ->
-        viewModel.setChosenPlayListId(playListId)
-    }
+  private fun createPlayListAdapter() {
+    adapter = PlayListAdapter(setCurrentPlayList, resolveCantoContent)
+    binding.allPlayLists.adapter = adapter
+  }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun showAddPlayListDialog() {
-        val newFragment = AddPlayListDialogFragment(viewModel.addNewPlayList)
-        newFragment.show(activity?.supportFragmentManager!!, "add_playlist")
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    val setCurrentPlayList: (Int) -> Unit = { position ->
-        val currentPlayList = viewModel.setCurrentPlayList(position)
-        if(currentPlayList != null)
-            showInfoDialog(currentPlayList.name)
-    }
-
-    private fun showCantosBottomSheet() {
-        val list = viewModel.playListWithCantos.value?.cantos?.map { it.number.toString() + ". " + it.name  } ?: emptyList()
-        if(list.isEmpty())
-            Toast.makeText(requireContext(), "brak pieśni", Toast.LENGTH_SHORT).show()
-        else {
-            val modalBottomSheet = CantosBottomSheet(list, clearPlayListId)
-            modalBottomSheet.show(requireActivity().supportFragmentManager, CantosBottomSheet.TAG)
-        }
-    }
-
-    private val clearPlayListId: () -> Unit = {
-        viewModel.setChosenPlayListId(0)
-    }
-
-    private fun showInfoDialog(playListName: String) = AlertDialog.Builder(requireContext())
-        .setTitle(playListName)
-        .setMessage("zbiór został ustawiony jako domyślny. \nMożesz dodawać do niego pieśni.")
-        .setPositiveButton("OK") { dialog, _ -> dialog.dismiss()}
-        .setNegativeButton("do zbioru") { dialog, _ -> navigateToCurrentPlayListFragment(dialog) }
-        .setNeutralButton("dodaj pieśni") { dialog, _ -> navigateToHomeFragment(dialog) }
-        .create()
-        .show()
-
-    private fun navigateToHomeFragment(dialog: DialogInterface) {
-        findNavController().navigate(R.id.navigation_home)
-        dialog.dismiss()
-    }
-
-    private fun navigateToCurrentPlayListFragment(dialog: DialogInterface) {
-        findNavController().navigate(R.id.currentPlayListFragment)
-        dialog.dismiss()
-    }
-
-  override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-    inflater.inflate(R.menu.queue_menu, menu)
-    super.onCreateOptionsMenu(menu, inflater)
-    menu.getItem(0).setOnMenuItemClickListener {
-      if(viewModel.isQueueDisabled()){
-        showQueueActivateDialog()
-      } else {
-        showQueueList()
+  private fun setObservers() {
+    with(viewModel) {
+      playLists.observe(viewLifecycleOwner) {
+        adapter.setList(viewModel.playLists.value ?: emptyList())
       }
+      playListWithCantos.observe(viewLifecycleOwner) {
+        getTextListThenResolveIfShowBottomSheet()
+      }
+      id.observe(viewLifecycleOwner) {  }
     }
   }
 
-  private fun showQueueList(): Boolean {
-    return true
+  private fun setListeners() {
+    binding.addPlayListButton.setOnClickListener {
+      showAddPlayListDialog()
+    }
+
+    binding.materialButtonToggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
+      setSortCondition(isChecked, checkedId)
+    }
   }
+
+  private fun setSortCondition(isChecked: Boolean, checkedId: Int) {
+    if(isChecked) { viewModel.choseSortCondition(checkedId) }
+  }
+
+  private val resolveCantoContent: (Long) -> Unit = {playListId ->
+    viewModel.setChosenPlayListId(playListId)
+  }
+
+  private fun showAddPlayListDialog() {
+    val newFragment = AddPlayListDialogFragment(viewModel.addNewPlayList)
+    newFragment.show(activity?.supportFragmentManager!!, "add_playlist")
+  }
+
+  private val setCurrentPlayList: (Int) -> Unit = { position ->
+    val currentPlayList = viewModel.setCurrentPlayList(position)
+    if(currentPlayList != null)
+      showInfoDialog(currentPlayList.name)
+  }
+
+  private fun getTextListThenResolveIfShowBottomSheet() {
+    if(viewModel.checkIfIdIsNotZero) {
+      val list = getCantosListWithNumberAndNameTextOrEmpty()
+      resolveIfShowBottomSheet(list)
+    }
+  }
+
+  private fun getCantosListWithNumberAndNameTextOrEmpty() = viewModel.getCantosListWithNumberAndName() ?: emptyList()
+
+  private fun resolveIfShowBottomSheet(list: List<String>) {
+    if(list.isEmpty()) showNoCantosToast()
+    else showCantosBottomSheet()
+  }
+
+  private fun showNoCantosToast() = Toast.makeText(requireContext(),
+    getString(R.string.no_cantos_message), Toast.LENGTH_SHORT).show()
+
+  private fun showCantosBottomSheet() {
+    val modalBottomSheet = CantosBottomSheet(list, clearPlayListId)
+    modalBottomSheet.show(requireActivity().supportFragmentManager, CantosBottomSheet.TAG)
+  }
+
+  private val clearPlayListId: () -> Unit = {
+    viewModel.setChosenPlayListId(0)
+  }
+
+  private fun showInfoDialog(playListName: String)  {
+    val dialog = YesNoDialog(requireContext(), playListName, getString(R.string.set_is_pointed)) {
+      it?.let { navigateToCurrentPlayListFragment(it) }
+    }
+    createAndShowYesNoNeutralDialog(dialog, getString(R.string.add_canto)) { it?.let {  navigateToHomeFragment(it) } }
+  }
+
+  private fun navigateToHomeFragment(dialog: DialogInterface) {
+    findNavController().navigate(R.id.navigation_home)
+    dialog.dismiss()
+  }
+
+  private fun navigateToCurrentPlayListFragment(dialog: DialogInterface) {
+    findNavController().navigate(R.id.currentPlayListFragment)
+    dialog.dismiss()
+  }
+
+  private fun setAppBarMenuProvider() {
+
+    val menuHost: MenuHost = requireActivity()
+
+    menuHost.addMenuProvider(object : MenuProvider {
+
+      override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.queue_menu, menu)
+      }
+
+      override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        return when (menuItem.itemId) {
+          R.id.queue_set -> { resolveOnQueueSetIconClick(); true }
+          else -> false
+        }
+      }
+    }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+  }
+
+  private fun resolveOnQueueSetIconClick() {
+    if(viewModel.isQueueDisabled) showQueueActivateDialog()
+    else showQueueList()
+  }
+
+  private fun showQueueList() = true
 
   private fun showQueueActivateDialog(): Boolean {
-    val builder: AlertDialog.Builder = AlertDialog.Builder(context)
-    builder
-      .setMessage("W trybie KOLEJKA ZESTAWÓW możesz dodawać do listy wiele zestawów i nawigować między nimi w PlayList.")
-      .setTitle("Czy chcesz aktywować tryb KOLEJKA ZESTAWÓW?")
-      .setPositiveButton("TAK") { _, _ ->
-        viewModel.activateQueueSet()
-      }
-      .setNegativeButton("NIE") { dialog, _ ->
-        dialog.dismiss()
-      }
-
-    val dialog: AlertDialog = builder.create()
-    dialog.show()
+    val dialog =
+      YesNoDialog(
+        requireContext(),
+        getString(R.string.multiple_set_mode_info),
+        getString(R.string.activate_multiple_mode_q)
+      ) { viewModel.activateQueueSet() }
+    createAndShowSimpleYesNoDialog(dialog)
     return true
   }
+
 }

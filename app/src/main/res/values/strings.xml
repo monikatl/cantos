@@ -9,4 +9,10 @@
     <string name="snackbar_draft_label">Przeniesiono szkic na listę pieśni.</string>
     <string name="title_calendar">Kalendarz</string>
     <string name="google_maps_key">A</string>
+    <string name="multiple_set_mode_info">W trybie KOLEJKA ZESTAWÓW możesz dodawać do listy wiele zestawów i nawigować między nimi w PlayList.</string>
+  <string name="activate_multiple_mode_q">Czy chcesz aktywować tryb KOLEJKA ZESTAWÓW?</string>
+  <string name="set_is_pointed">zbiór został ustawiony jako domyślny. \nMożesz dodawać do niego pieśni.</string>
+  <string name="to_set">do zbioru</string>
+  <string name="add_canto">dodaj pieśni</string>
+  <string name="no_cantos_message">brak pieśni</string>
 </resources>

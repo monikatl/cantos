@@ -25,11 +25,14 @@ data class Canto(
         isFavourite = !isFavourite
     }
 
-    fun transformDraft() {
-        isDraft = !isDraft
-    }
+  fun transformDraft() {
+    isDraft = !isDraft
+  }
 
-    companion object {
+  fun getNumberWithName() = number.toString() + ". " + name
+
+
+  companion object {
         fun createDraftCanto(name: String, number: Int? = null, kind: Kind? = null, pageCounter: Int? = null): Canto {
             return Canto(number, name, kind, pageCounter, isDraft = true)
         }
